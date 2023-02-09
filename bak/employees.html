@@ -4,72 +4,41 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Employees</title>
-        <style>
-        * {
-            box-sizing: border-box;
-          }
-          
-          body {
-            font: 16px Arial;
-          }
-          
-          /*the container must be positioned relative:*/          
-          .autocomplete {
-            position: relative;
-            display: inline-block;
-          }
-          
-          input {
-            border: 1px solid transparent;
-            background-color: #f1f1f1;
-            padding: 10px;
-            font-size: 16px;
-          }
-          
-          input[type=text] {
-            background-color: #f1f1f1;
-            width: 100%;
-          }
-          
-          input[type=submit] {
-            background-color: DodgerBlue;
-            color: #fff;
-            cursor: pointer;
-          }
-          
-          .autocomplete-items {
-            position: absolute;
-            border: 1px solid #d4d4d4;
-            border-bottom: none;
-            border-top: none;
-            z-index: 99;
-            /*position the autocomplete items to be the same width as the container:*/
-            top: 100%;
-            left: 0;
-            right: 0;
-          }
-          
-          .autocomplete-items div {
-            padding: 10px;
-            cursor: pointer;
-            background-color: #fff;
-            border-bottom: 1px solid #d4d4d4;
-          }
-          
-          /*when hovering an item:*/
-          .autocomplete-items div:hover {
-            background-color: #e9e9e9;
-          }
-          
-          /*when navigating through the items using the arrow keys:*/
-          .autocomplete-active {
-            background-color: DodgerBlue !important;
-            color: #ffffff;
-          }
-        </style>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+        <script src="//js.jotform.com/JotFormCustomWidget.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+        <title>Find BambooHr Employee Widget</title>
         <script type="text/javascript">
             window.onload = function() {
+
+                //always subscribe to ready event and implement widget related code
+                //inside callback function , it is the best practice while developing widgets
+                JFCustomWidget.subscribe("ready", function(){
+
+                    const companyDomain = JFCustomWidget.getWidgetSetting('companyDomain');
+                    if (companyDomain) {
+                        document.getElementById('labelCompanyDomain').textContent = companyDomain;
+                    }
+
+                    const apiKey = JFCustomWidget.getWidgetSetting('apiKey');
+
+                    if (apiKey) {
+                        document.getElementById('labelApiKey').textContent = apiKey;
+                    }
+
+                    //subscribe to form submit event
+                    JFCustomWidget.subscribe("submit", function(){
+                        var msg = {
+                            //you should valid attribute to data for JotForm
+                            //to be able to use you widget as required
+                            valid: true,
+                            value: document.getElementById('employeeInput').value
+                        }
+                        // send value to JotForm
+                        JFCustomWidget.sendSubmit(msg);
+                    });
+
+                });
 
                 // https://stackoverflow.com/questions/67353099/how-to-create-an-autocomplete-search-box-in-bootstrap
 
@@ -129,7 +98,11 @@
 
                                     /* set the value of the hidden text field to chosen value */
                                     /* TODO: change this to the ID */
-                                    document.getElementById("employeeId").value = this.getElementsByTagName("input")[0].value;
+
+                                    document.getElementById("labelEmployeeId").innerHTML = this.getElementsByTagName("input")[0].value;
+                                    document.getElementById("labelFirstName").innerHTML = this.getElementsByTagName("input")[0].value;
+                                    document.getElementById("labelSurname").innerHTML = this.getElementsByTagName("input")[0].value;
+
                                     // document.getElementById("employeeId").value = this.getElementsByTagName("input")[0].getAttribute(k);
 
                                     /*close the list of autocompleted values,
@@ -217,14 +190,11 @@
 
                 } // autocomplete
 
-                // parse querystring
-                const urlParams = new URLSearchParams(location.search);
+                const companyDomain = document.getElementById('labelCompanyDomain').textContent;
+                console.log(`companyDomain: ${companyDomain}`)
 
-                const companyDomain = urlParams.get('domain')
-                // console.log(`companyDomain: ${companyDomain}`)
-
-                const apiKey = urlParams.get('apikey')
-                // console.log(`apiKey: ${apiKey}`)
+                const apiKey = document.getElementById('labelApiKey').textContent;
+                console.log(`apiKey: ${apiKey}`)
 
                 var data = GetBambooHrEmployee(companyDomain,apiKey)
 
@@ -232,7 +202,7 @@
                 autocomplete(document.getElementById("employeeInput"), data, 'id', 'displayName');
 
                 /* Mock function that returns data in the expected manner */
-                /*
+                
                 function GetBambooHrEmployee(companyDomain, apiKey) {
 
                     console.info('GetBambooHrEmployee')
@@ -247,18 +217,19 @@
                             { "id": "lastName", "type": "text", "name": "Last name" },
                         ],
                         "employees": [
-                            { "id": "279", "displayName": "Mickey Mouse", "firstName": "Mickey", "lastName": "Mouse" },
-                            { "id": "569", "displayName": "Donald Duck", "firstName": "Donald", "lastName": "Duck", },
-                            { "id": "810", "displayName": "Bugs Bunny", "firstName": "Bugs", "lastName": "Bunny" },
-                            { "id": "757", "displayName": "Elmer Fudd", "firstName": "Elmer", "lastName": "Fudd" },
+                            { "id": "100", "displayName": "Mickey Mouse", "firstName": "Mickey", "lastName": "Mouse" },
+                            { "id": "200", "displayName": "Donald Duck", "firstName": "Donald", "lastName": "Duck", },
+                            { "id": "300", "displayName": "Daisy Duck", "firstName": "Donald", "lastName": "Daisy", },
+                            { "id": "400", "displayName": "Bugs Bunny", "firstName": "Bugs", "lastName": "Bunny" },
+                            { "id": "500", "displayName": "Elmer Fudd", "firstName": "Elmer", "lastName": "Fudd" },
                         ]
                     }.employees
 
                 } // GetBambooHrEmployee
-                */
+                
 
                 /* invoke REST API method */
-                
+                /*
                 function GetBambooHrEmployee (companyDomain, apiKey) {
 
                     console.log('GetBambooHrEmployee')
@@ -297,21 +268,26 @@
                     }
 
                 }; // GetBambooHrEmployee
-
+*/
             } // onload()
         </script>
     </head>
     <body>
-        <h1>Widgets</h1>
-        <h2>BambooHr Employees</h2>
-        <p>Start typing:</p>
         <!--Make sure the form has the autocomplete function switched off:-->
-        <form autocomplete="off" action="/action_page.php">
-          <div class="autocomplete" style="width:300px;">
-            <input id="employeeId" type="text">
-            <input id="employeeInput" type="text" name="" placeholder="Employee">
-          </div>
-          <input type="submit">
+        <form autocomplete="off">
+            <div class="autocomplete" class="mb-3">
+                <label for="employeeInput" class="form-label">Employee Name</label>
+                <input id="employeeInput" type="text" placeholder="Employee" class="form-control" aria-describedby="employeeHelp">
+                <div id="employeeHelp" class="form-text">Please enter an employee's name.</div>
+            </div>
+
+            <span id="labelCompanyDomain" class="form-text">Company Domain</span><br/>
+            <span id="labelApiKey" class="form-text">API Key</span><br/>
+            <span id="labelEmployeeId" class="form-text">Employee Id</span><br/>
+            <span id="labelFirstName" class="form-text">FirstName</span><br/>
+            <span id="labelSurname" class="form-text">Surname</span><br/>
+    
         </form>
+
     </body>
 </html>
