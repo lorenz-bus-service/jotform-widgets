@@ -43,3 +43,5 @@ make pub
 ## Reference
 
 - [Jotform Widget documentation](https://www.jotform.com/developers/widgets/)
+- [Bootstrap Autocomplete](https://bootstrap-autocomplete.readthedocs.io/en/latest/)
+- [jQuery.ajax()](https://api.jquery.com/Jquery.ajax/)
