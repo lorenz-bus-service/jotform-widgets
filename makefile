@@ -2,7 +2,7 @@
 # USER=[create an env. variable if one doesn't exist]
 
 pub:
-	@for file in *.html *.js; do \
+	@for file in *.html *.js *.json; do \
 		echo "publishing $$file to ${HOST}..."; \
 		scp $$file ${USER}@${HOST}:~; \
 	done
