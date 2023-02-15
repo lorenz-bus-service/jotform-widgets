@@ -40,8 +40,22 @@ chmod +x ./deploy.sh
 make pub
 ```
 
+## Nginx
+
+`/etc/nginx/sites-available/jotform.lorenzbus.com`:
+
+```
+location / {
+    # First attempt to serve request as file, then                
+    # as directory, then fall back to displaying a 404.
+    proxy_pass http://127.0.0.1:3000/;
+}
+```
+
 ## Reference
 
 - [Jotform Widget documentation](https://www.jotform.com/developers/widgets/)
 - [Bootstrap Autocomplete](https://bootstrap-autocomplete.readthedocs.io/en/latest/)
 - [jQuery.ajax()](https://api.jquery.com/Jquery.ajax/)
+- [Cross-Origin Resource Sharing (CORS)](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)
+- [NodeJS CORS Guide: What It Is and How to Enable It](https://www.stackhawk.com/blog/nodejs-cors-guide-what-it-is-and-how-to-enable-it/)
