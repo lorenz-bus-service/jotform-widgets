@@ -44,13 +44,23 @@
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script> -->
     <script src="//cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.7/dist/latest/bootstrap-autocomplete.min.js"></script>
     <script src="//js.jotform.com/JotFormCustomWidget.min.js"></script>
-    <script src="com.bamboohr.api.js"></script>
     <script>
         $(function () {
 
             let companyDomain = null;
             let apiKey = null;
             let employees = [];
+
+            $.ajax({
+                // url: "https://jotform.lorenzbus.com/api/employees",
+                url: "http://localhost:3000/api/employees",
+                type: 'GET',
+                dataType: 'json', // added data type
+                success: function(res) {
+                    // console.log(res);
+                    employees = res.employees
+                }
+            });
 
             //always subscribe to ready event and implement widget related code
             //inside callback function , it is the best practice while developing widgets
@@ -95,6 +105,35 @@
 
             });
 
+            /*
+            response:
+            {
+                "fields": [
+                    {
+                        "id": "displayName",
+                        "type": "text",
+                        "name": "Display name"
+                    },
+                    ...
+                ],
+                "employees": [
+                    {
+                        "id": "123",
+                        "displayName": "First Last",
+                        "firstName": "First",
+                        "lastName": "Last",
+                        "preferredName": null,
+                        "jobTitle": "Driver",
+                        "pronouns": null,
+                        "photoUploaded": true,
+                        "photoUrl": "https://images.bamboohr.com/123456/photos/123.jpg?...",
+                        "canUploadPhoto": 1
+                    },
+                    ...
+                ]
+            }
+            */
+            
             $('.basicAutoSelect').autoComplete({
                 resolver: 'custom',
                 formatResult: function (item) {
@@ -111,12 +150,17 @@
                         console.log('***** search *****');
                         console.log('qry',qry);
 
+                        const filtered = employees.filter( e => e.displayName.toLowerCase().includes(qry.toLowerCase()) );
+                        callback(filtered)
+
                         // console.log('companyDomain',companyDomain);
                         // console.log('apiKey',apiKey);
 
+                        // ajax
+                        /*
                         $.ajax({
                             // url: `https://api.bamboohr.com/api/gateway.php/${companyDomain}/v1/employees/directory`,
-                            url: `https://jotform.${companyDomain}.com/com.bamboohr.employees.json`,
+                            url: `https://jotform.lorenzbus.com/com.bamboohr.employees.json`,
                             type: 'get',
                             headers: { 
                                 Accept: 'application/json', 
@@ -125,34 +169,7 @@
                         }).done(function (res) {
                             console.log('***** done *****');
 
-                            /*
-                            response:
-                            {
-                                "fields": [
-                                    {
-                                        "id": "displayName",
-                                        "type": "text",
-                                        "name": "Display name"
-                                    },
-                                    ...
-                                ],
-                                "employees": [
-                                    {
-                                        "id": "123",
-                                        "displayName": "First Last",
-                                        "firstName": "First",
-                                        "lastName": "Last",
-                                        "preferredName": null,
-                                        "jobTitle": "Driver",
-                                        "pronouns": null,
-                                        "photoUploaded": true,
-                                        "photoUrl": "https://images.bamboohr.com/123456/photos/123.jpg?...",
-                                        "canUploadPhoto": 1
-                                    },
-                                    ...
-                                ]
-                            }
-                            */
+
 
                             // res.employees.forEach(employee => {
                             //     console.log('employee',employee);
@@ -166,7 +183,10 @@
 
                             // assign results to select using its callback() method
                             callback(employees)
+
                         });
+                        */
+                        // ajax                            
                     }
                 }
             });
