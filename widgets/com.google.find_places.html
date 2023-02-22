@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">        
+      <script src="//js.jotform.com/JotFormCustomWidget.min.js"></script>
+      <script src="https://maps.googleapis.com/maps/api/js?key=<<your_google_key_comes_here>>&libraries=places&v=weekly&callback=Function.prototype" async defer></script>
+      <script>
+        const tplMapricotGoogleAutocomplete = document.createElement('template')
+        tplMapricotGoogleAutocomplete.innerHTML = `
+        <style>
+          .form-sublabel {
+            font-size: .75em;
+            margin-top: 5px 0px 10px 2px;
+            display: block;
+            word-break: break-word; 
+            color: #57647E !important;       
+          }
+          .autocomplete-control-label {
+            font-size: 16px;
+            font-weight: normal !important;
+          }                       
+        </style>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css" integrity="sha512-pli9aKq758PMdsqjNA+Au4CJ7ZatLCCXinnlSfv023z4xmzl8s+Jbj2qNR7RI8DsxFp5e8OvbYGDACzKntZE9w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <form id="container">           
+            <div class="row">
+                <div class="col-lg-12">
+                <input type="text" name="ezac_address_line_1" id="ezac_address_line_1" autocomplete="off" placeholder="Address Line 1" class="form-control ezac_address_line_1"/>
+                <label class="form-sublabel">Street Address</label>
+                </div>
+            </div>        
+            <div class="row">
+                <div class="col-lg-12">
+                <input type="text" name="ezac_address_line_2" id="ezac_address_line_2" autocomplete="off" placeholder="Address Line 2" class="form-control ezac_address_line_2"/>
+                <label class="form-sublabel">Street Address Line 2</label>
+                </div>          
+            </div>      
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <input type="text" name="ezac_city" id="ezac_city" autocomplete="off" placeholder="City" class="form-control ezac_city"/>
+                <label class="form-sublabel">City</label>
+                </div><!--
+                --><div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <select name="ezac_state" id="ezac_state" autocomplete="off" placeholder="State" class="form-control ezac_state">
+                        <option value="" selected disabled>State</option>
+                        <option value="AL">Alabama</option>
+                        <option value="AK">Alaska</option>
+                        <option value="AZ">Arizona</option>
+                        <option value="AR">Arkansas</option>
+                        <option value="CA">California</option>
+                        <option value="CO">Colorado</option>
+                        <option value="CT">Connecticut</option>
+                        <option value="DE">Delaware</option>
+                        <option value="DC">District of Columbia</option>
+                        <option value="FL">Florida</option>
+                        <option value="GA">Georgia</option>
+                        <option value="GU">Guam</option>
+                        <option value="HI">Hawaii</option>
+                        <option value="ID">Idaho</option>
+                        <option value="IL">Illinois</option>
+                        <option value="IN">Indiana</option>
+                        <option value="IA">Iowa</option>
+                        <option value="KS">Kansas</option>
+                        <option value="KY">Kentucky</option>
+                        <option value="LA">Louisiana</option>
+                        <option value="ME">Maine</option>
+                        <option value="MD">Maryland</option>
+                        <option value="MA">Massachusetts</option>
+                        <option value="MI">Michigan</option>
+                        <option value="MN">Minnesota</option>
+                        <option value="MS">Mississippi</option>
+                        <option value="MO">Missouri</option>
+                        <option value="MT">Montana</option>
+                        <option value="NE">Nebraska</option>
+                        <option value="NV">Nevada</option>
+                        <option value="NH">New Hampshire</option>
+                        <option value="NJ">New Jersey</option>
+                        <option value="NM">New Mexico</option>
+                        <option value="NY">New York</option>
+                        <option value="NC">North Carolina</option>
+                        <option value="ND">North Dakota</option>
+                        <option value="OH">Ohio</option>
+                        <option value="OK">Oklahoma</option>
+                        <option value="OR">Oregon</option>
+                        <option value="PA">Pennsylvania</option>
+                        <option value="PR">Puerto Rico</option>
+                        <option value="RI">Rhode Island</option>
+                        <option value="SC">South Carolina</option>
+                        <option value="SD">South Dakota</option>
+                        <option value="TN">Tennessee</option>
+                        <option value="TX">Texas</option>
+                        <option value="UT">Utah</option>
+                        <option value="VT">Vermont</option>
+                        <option value="VI">Virgin Islands (US)</option>
+                        <option value="VA">Virginia</option>
+                        <option value="WA">Washington</option>
+                        <option value="WV">West Virginia</option>
+                        <option value="WI">Wisconsin</option>
+                        <option value="WY">Wyoming</option>
+                        <option value="AA">Armed Forces (the) Americas</option>
+                        <option value="AE">Armed Forces Europe</option>
+                        <option value="AP">Armed Forces Pacific</option>
+                        <option value="APO">Army Post Office (U.S. Army and U.S. Air Force)</option>
+                        <option value="FPO">Fleet Post Office (U.S. Navy and U.S. Marine Corps)</option>        
+                </select>
+                <label class="form-sublabel">State</label>            
+                </div><!--
+                --><div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                <input type="text" name="ezac_zip" id="ezac_zip" autocomplete="off" placeholder="ZIP" class="form-control ezac_zip"/>
+                <label class="form-sublabel">Zip Code</label>           
+                </div>
+            </div>      
+        </form>        
+        `
+
+        class MapricotGoogleAutocomplete extends HTMLElement{  
+
+          assets = {}
+
+          static get observedAttributes() { return ['autocomplete-type']; }
+
+          constructor(){
+            super()
+            this.employerFieldTemplate = document.createElement('template')
+            this.employerFieldTemplate.innerHTML = `<div class="row">
+                <div class="col-lg-12">
+                  <input type="text" name="ezac_employer" autocomplete="off" placeholder="Employer" class="form-control ezac_employer"/>
+                  <label class="form-sublabel">Employer</label>
+                </div>
+            </div>`
+            /*this.headerTemplate = document.createElement('template')
+            this.headerTemplate.innerHTML = `<div class="form-header-group  header-default">
+              <div class="header-text httal htvam">
+                <h2 id="header_4" class="form-header autocomplete-control-label" data-component="header">{{label-text}}</h2>
+              </div>
+            </div>`*/
+
+            this.attachShadow({ mode: 'open'})               
+          }
+          connectedCallback(){             
+
+            this.shadowRoot.appendChild(tplMapricotGoogleAutocomplete.content.cloneNode(true))
+            
+            this.googleCaller = setInterval(()=>{
+              this.render()
+            },200)
+          }
+          attributeChangedCallback(attributeName, oldValue, newValue) {
+            if(attributeName === "autocomplete-type"){
+              this.render()              
+            }
+            /*
+            if(attributeName === "label") {
+              if(typeof this.getAttribute('label') != "undefined" && this.getAttribute('label') !== null) {
+                this.headerTemplate.innerHTML = this.headerTemplate.innerHTML.replace('{{label-text}}', this.getAttribute('label'))
+              }
+              else
+              {
+                this.headerTemplate.innerHTML = this.headerTemplate.innerHTML.replace('{{label-text}}', '')
+              }
+
+              this.shadowRoot.insertBefore(this.headerTemplate.content.cloneNode(true), this.shadowRoot.querySelector('#container'))
+            }
+            */
+          }
+          render(){
+            if(typeof google != 'undefined') {
+                let types = (typeof this.getAttribute('autocomplete-type') == 'normal') ? ['geocode'] : (this.getAttribute('autocomplete-type') == 'employer') ? ['establishment'] : ['geocode']
+                
+                let autocompleTarget = this.shadowRoot.querySelector('.ezac_address_line_1')
+                
+                if(this.getAttribute("autocomplete-type") == "employer") {
+                  this.shadowRoot.querySelector('#container').insertBefore(this.employerFieldTemplate.content.cloneNode(true), this.shadowRoot.querySelector('#container').firstChild)
+                  autocompleTarget = this.shadowRoot.querySelector('#container').firstChild.querySelector('input[type="text"]')
+                }
+                else if(this.shadowRoot.querySelector('.ezac_employer') !== null)
+                {
+                  this.shadowRoot.querySelector('#container').firstChild.remove()
+                }
+
+                this.assets.autocomplete = new google.maps.places.Autocomplete(
+                  autocompleTarget, 
+                  {
+                    types: types,
+                    componentRestrictions: {
+                      country: "us"
+                    }
+                  }
+                )
+                this.addEventListeners()
+                clearInterval(this.googleCaller)      
+            }
+          }
+          addEventListeners() {
+            this.assets.autocomplete.addListener("place_changed", ()=>{
+              let resultPlace = this.assets.autocomplete.getPlace()
+
+              let streetAddressComponents = [null ,null, null]
+
+              resultPlace.address_components.forEach((addressComponentItem)=>{
+                switch(true) {
+                  case (addressComponentItem.types.indexOf('subpremise') > -1):
+                    streetAddressComponents[0] = addressComponentItem.short_name
+                  break
+                  case (addressComponentItem.types.indexOf('street_number') > -1):
+                    streetAddressComponents[1] = addressComponentItem.short_name
+                  break
+                  case (addressComponentItem.types.indexOf('route') > -1):
+                    streetAddressComponents[2] = addressComponentItem.short_name
+                  break                  
+                  case (addressComponentItem.types.indexOf('postal_code') > -1):
+                    this.shadowRoot.querySelector(`.ezac_zip`).value = addressComponentItem.short_name
+                  break
+                  case (addressComponentItem.types.indexOf('administrative_area_level_1') > -1 && addressComponentItem.types.indexOf('political') > -1):
+                    this.shadowRoot.querySelector(`.ezac_state`).value = addressComponentItem.short_name
+                  break
+                  case (addressComponentItem.types.indexOf('locality') > -1 && addressComponentItem.types.indexOf('political') > -1):                
+                    this.shadowRoot.querySelector(`.ezac_city`).value = addressComponentItem.long_name
+                  break                 
+                } 
+              })
+
+              if(this.shadowRoot.querySelector('.ezac_employer') === null) {
+                this.shadowRoot.querySelector(`.ezac_address_line_1`).value = resultPlace.name
+              }
+              else
+              {
+                this.shadowRoot.querySelector('.ezac_employer').value = resultPlace.name
+                this.shadowRoot.querySelector(`.ezac_address_line_1`).value = (streetAddressComponents.indexOf(null) == -1) ? streetAddressComponents.join(' ') : streetAddressComponents.filter((component)=>{return component !== null}).join(' ')
+              }              
+
+              this.address_details = {
+                address_line: this.shadowRoot.querySelector('#ezac_address_line_1').value,
+                address_line_2: this.shadowRoot.querySelector('#ezac_address_line_2').value,
+                postal_code: this.shadowRoot.querySelector(`.ezac_zip`).value,
+                state: this.shadowRoot.querySelector(`.ezac_state`).value,
+                city: this.shadowRoot.querySelector(`.ezac_city`).value
+              }
+
+              if(this.shadowRoot.querySelector('.ezac_employer') !== null) {
+                this.address_details.employer = this.shadowRoot.querySelector('.ezac_employer').value
+              }
+            })   
+          }   
+        }
+
+        window.customElements.define('mapricot-google-autocomplete', MapricotGoogleAutocomplete)        
+      </script>     
+    </head>
+    <body>
+        <div id="main">
+            <mapricot-google-autocomplete></mapricot-google-autocomplete>
+        </div>
+        <script type="text/javascript">
+            //always subscribe to ready event and implement widget related code
+            //inside callback function , it is the best practice while developing widgets
+            JFCustomWidget.subscribe("ready", function(){
+                console.log(JFCustomWidget.getWidgetSettings())
+                document.getElementsByTagName('mapricot-google-autocomplete')[0]
+                  .setAttribute("autocomplete-type", JFCustomWidget.getWidgetSetting('autocomplete-type'))
+
+                //subscribe to form submit event
+                JFCustomWidget.subscribe("submit", function(){
+                    console.log(document.getElementsByTagName('mapricot-google-autocomplete')[0])
+                    var msg = {
+                        //you should valid attribute to data for JotForm
+                        //to be able to use youw widget as required
+                        valid: true,
+                        value: JSON.stringify(document.getElementsByTagName('mapricot-google-autocomplete')[0].address_details)
+                    }
+                    // send value to JotForm
+                    JFCustomWidget.sendSubmit(msg);
+                });
+            });
+        </script>
+    </body>
+</html>
