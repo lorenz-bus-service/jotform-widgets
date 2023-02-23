@@ -260,7 +260,9 @@
 
                 // retrieve API key from Jotform
                 googleApiKey = JFCustomWidget.getWidgetSetting('googleApiKey');
-                // TODO: modify the SCRIPT tag to include the API key
+                /*
+                TODO: call /api/google/maps; set x-api-key header to googleApiKey
+                */
 
                 document.getElementsByTagName('mapricot-google-autocomplete')[0]
                   .setAttribute("autocomplete-type", JFCustomWidget.getWidgetSetting('autocomplete-type'))
