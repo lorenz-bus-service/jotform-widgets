@@ -83,6 +83,7 @@
             //always subscribe to ready event and implement widget related code
             //inside callback function , it is the best practice while developing widgets
             JFCustomWidget.subscribe("ready", function(){
+                console.log('JFCustomWidget.ready')
 
                 companyDomain = JFCustomWidget.getWidgetSetting('companyDomain');
                 // development only
@@ -117,7 +118,7 @@
 
                 //subscribe to form submit event
                 JFCustomWidget.subscribe("submit", function(){
-                    console.log('submit')
+                    console.log('JFCustomWidget.submit')
 
                     // const employee = JSON.parse( $('#selectedEmployee')[0].innerHTML )
                     // console.log('employee',employee)
@@ -135,19 +136,16 @@
                 });
 
                 JFCustomWidget.subscribe('populate', function(data){
-                    console.log('populate',data);
+                    console.log('JFCustomWidget.populate')
 
                     var msg = {
                         valid: true,
                         value: data
                     }
-
                     console.log('msg',msg)
 
                     // send value to JotForm
-                    console.log('sendData')
                     JFCustomWidget.sendData(msg);
-
                 });
 
             });
