@@ -108,6 +108,46 @@ app.use("/api/bamboohr",
     })
 );
 
+/**
+ * purpose: make a proxy call to google maps
+ * 
+ * https://host/api/google/maps --> https://maps.googleapis.com/maps/api/js
+ */
+app.use("/api/google/maps", 
+    createProxyMiddleware({
+        // ?key=<<GOOGLE_MAPS_API_KEY>>&libraries=places&v=weekly&callback=Function.prototype
+        target: `https://maps.googleapis.com/maps/api/js`,
+        changeOrigin: true,
+        headers: {
+            Accept: 'application/json',
+        },
+        pathRewrite: {
+            [`^/api/google/maps`]: '',
+        },
+        router: function(req) {
+            console.log('***** router *****')
+            console.log('x-api-key',req.headers['x-api-key'])
+
+            // modify the target to include the correct querystring
+            const qs = `key=${ req.headers['x-api-key'] }&libraries=places&v=weekly&callback=Function.prototype`
+            console.log('qs',qs)
+
+            const target = `https://maps.googleapis.com/maps/api/js?${ qs }`;
+            console.log('target:',target);
+
+            return target;
+        },
+        onProxyReq(proxyReq, req, res) {
+            console.log('***** onProxyReq *****');
+
+            if (!req.headers['x-api-key'] ) {
+                res.status(401).send({message: 'missing API key'});
+            }
+
+        }
+    })
+);
+    
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
