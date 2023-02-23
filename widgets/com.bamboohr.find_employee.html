@@ -11,8 +11,7 @@
         <div class="form-group">
             <label for="selectEmployeeName" class="form-label">Employee Name</label>
             <div class="mb-3">
-                <!-- <select class="form-control basicAutoSelect" name="selectEmployeeName" data-url="https://jotform.lorenzbus.com/employees.json" placeholder="Type the employee's name..." autocomplete="off"></select> -->
-                <select class="form-control basicAutoSelect" name="selectEmployeeName" placeholder="Type the employee's name..." autocomplete="off"></select>
+                <select class="form-control basicAutoSelect" id="selectEmployeeName" placeholder="Type the employee's name..." autocomplete="off"></select>
                 <small id="employeeHelp" class="form-text text-muted">Searching will begin when the third letter is typed.</small>
             </div>
         </div>
@@ -49,9 +48,9 @@
             let apiKey = null;
             let employees = [];
 
+            /*
             $.ajax({
-                // url: "https://jotform.lorenzbus.com/api/employees",
-                url: "http://localhost:3000/api/bamboohr/employees/directory",
+                url: "https://jotform-widgets.azurewebsites.net/api/bamboohr/employees/directory",
                 type: 'GET',
                 dataType: 'json', // added data type
                 success: function(res) {
@@ -59,6 +58,27 @@
                     employees = res.employees
                 }
             });
+            */
+
+            const selectEmployeeName = document.getElementById('selectEmployeeName');
+            selectEmployeeName.addEventListener("change", function(){
+
+                console.log('change',selectEmployeeName.value);
+
+                var msg = {
+                    //you should valid attribute to data for JotForm
+                    //to be able to use youw widget as required
+                    valid: true,
+                    value: selectEmployeeName.value
+                }
+
+                console.log('msg',msg)
+
+                // send value to JotForm
+                console.log('sendData')
+                JFCustomWidget.sendData(msg);
+
+            },true); 
 
             //always subscribe to ready event and implement widget related code
             //inside callback function , it is the best practice while developing widgets
@@ -77,21 +97,15 @@
                 }
 
                 if (companyDomain && apiKey) {
-                    // employees = GetBambooHrEmployee(companyDomain,apiKey);
-                    // employees.forEach(e => {
-                    //     console.log('displayName',e.displayName);
-                    // });
 
                     $.ajax({
-                        // url: "https://jotform.lorenzbus.com/api/employees",
-                        url: "http://localhost:3000/api/bamboohr/employees/directory",
+                        url: "https://jotform-widgets.azurewebsites.net/api/bamboohr/employees/directory",
                         type: 'GET',
-                        // headers: { 
-                        //         Accept: 'application/json',
-                        //         Subdomain: companyDomain,
-                        //         ApiKey: apiKey,
-                        //         Authorization: "Basic " + btoa(apiKey + ":password")
-                        //     },
+                        headers: { 
+                                Accept: 'application/json',
+                                'x-subdomain': companyDomain,
+                                'x-api-key': apiKey,
+                            },
                         dataType: 'json', // added data type
                         success: function(res) {
                             // console.log(res);
@@ -118,6 +132,22 @@
 
                     // send value to JotForm
                     JFCustomWidget.sendSubmit(msg);
+                });
+
+                JFCustomWidget.subscribe('populate', function(data){
+                    console.log('populate',data);
+
+                    var msg = {
+                        valid: true,
+                        value: data
+                    }
+
+                    console.log('msg',msg)
+
+                    // send value to JotForm
+                    console.log('sendData')
+                    JFCustomWidget.sendData(msg);
+
                 });
 
             });
