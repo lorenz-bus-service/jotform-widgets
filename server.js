@@ -14,8 +14,7 @@ const express = require('express');
 const morgan = require("morgan");
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
-const PORT = 3000
-const HOST = 'localhost'
+const port = process.env.PORT || 3000;
 
 const app = express();
 app.use(express.json());
@@ -32,8 +31,16 @@ app.use(morgan('dev'));
 //     next();
 // });
 
+app.get('/api', function (req, res) {
+    return res.send("/api");
+})
+
 app.get('/widgets/find_employee', (req, res) => {
     res.sendFile(`${__dirname}/widgets/com.bamboohr.find_employee.html`)
+});
+
+app.get('/widgets/find_places', (req, res) => {
+    res.sendFile(`${__dirname}/widgets/com.google.find_places.html`)
 });
 
 /*
@@ -101,7 +108,6 @@ app.use("/api/bamboohr",
     })
 );
 
-
-app.listen(PORT, HOST, () => {
-    console.log(`Service running at http://${HOST}:${PORT}`);
+app.listen(port, () => {
+    console.log(`Server listening on port ${port}`);
 });
