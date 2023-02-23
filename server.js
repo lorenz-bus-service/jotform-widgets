@@ -31,20 +31,16 @@ app.use(morgan('dev'));
 //     next();
 // });
 
-app.get('/', function (req, res) {
-    return res.send("/!");
-})
-
 app.get('/api', function (req, res) {
     return res.send("/api");
 })
 
-// app.get('/info', (req, res, next) => {
-//     res.send(`http://${HOST}:${PORT}/info`);
-// });
-
 app.get('/widgets/find_employee', (req, res) => {
     res.sendFile(`${__dirname}/widgets/com.bamboohr.find_employee.html`)
+});
+
+app.get('/widgets/find_places', (req, res) => {
+    res.sendFile(`${__dirname}/widgets/com.google.find_places.html`)
 });
 
 /*

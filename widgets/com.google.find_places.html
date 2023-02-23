@@ -4,7 +4,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">        
       <script src="//js.jotform.com/JotFormCustomWidget.min.js"></script>
-      <script src="https://maps.googleapis.com/maps/api/js?key=<<your_google_key_comes_here>>&libraries=places&v=weekly&callback=Function.prototype" async defer></script>
+      <script src="https://maps.googleapis.com/maps/api/js?key=%GOOGLE_MAPS_API_KEY%&libraries=places&v=weekly&callback=Function.prototype" async defer></script>
       <script>
         const tplMapricotGoogleAutocomplete = document.createElement('template')
         tplMapricotGoogleAutocomplete.innerHTML = `
@@ -255,7 +255,13 @@
             //always subscribe to ready event and implement widget related code
             //inside callback function , it is the best practice while developing widgets
             JFCustomWidget.subscribe("ready", function(){
+
                 console.log(JFCustomWidget.getWidgetSettings())
+
+                // retrieve API key from Jotform
+                googleApiKey = JFCustomWidget.getWidgetSetting('googleApiKey');
+                // TODO: modify the SCRIPT tag to include the API key
+
                 document.getElementsByTagName('mapricot-google-autocomplete')[0]
                   .setAttribute("autocomplete-type", JFCustomWidget.getWidgetSetting('autocomplete-type'))
 
