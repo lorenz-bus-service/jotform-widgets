@@ -12,10 +12,11 @@
             <label for="selectEmployeeName" class="form-label">Employee Name</label>
             <div class="mb-3">
                 <select class="form-control basicAutoSelect" id="selectEmployeeName" placeholder="Type the employee's name..." autocomplete="off"></select>
-                <small id="employeeHelp" class="form-text text-muted">Searching will begin when the third letter is typed (2023-02-28 07:51).</small>
+                <small id="employeeHelp" class="form-text text-muted">Searching will begin when the third letter is typed (2023-02-28 12:06).</small>
             </div>
         </div>
         <!-- development only -->
+        <!--
         <div class="form-group">
             <label for="labelCompanyDomain" class="form-label">Company Domain</label>
             <span id="labelCompanyDomain" class="form-text"></span><br/>
@@ -24,6 +25,7 @@
             <label for="labelApiKey" class="form-label">API Key</label>
             <span id="labelApiKey" class="form-text"></span><br/>
         </div>
+        -->
         <!-- /development only -->
 
         <!-- TODO: make hidden -->
@@ -84,15 +86,15 @@
 
                 companyDomain = JFCustomWidget.getWidgetSetting('companyDomain');
                 // development only
-                if (companyDomain) {
-                    document.getElementById('labelCompanyDomain').textContent = companyDomain;
-                }
+                // if (companyDomain) {
+                //     document.getElementById('labelCompanyDomain').textContent = companyDomain;
+                // }
 
                 apiKey = JFCustomWidget.getWidgetSetting('apiKey');
                 // development only
-                if (apiKey) {
-                    document.getElementById('labelApiKey').textContent = apiKey;
-                }
+                // if (apiKey) {
+                //     document.getElementById('labelApiKey').textContent = apiKey;
+                // }
 
                 if (companyDomain && apiKey) {
                     console.log('fetching employee directory')
