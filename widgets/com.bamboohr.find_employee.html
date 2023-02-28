@@ -12,7 +12,7 @@
             <label for="selectEmployeeName" class="form-label">Employee Name</label>
             <div class="mb-3">
                 <select class="form-control basicAutoSelect" id="selectEmployeeName" placeholder="Type the employee's name..." autocomplete="off"></select>
-                <small id="employeeHelp" class="form-text text-muted">Searching will begin when the third letter is typed (2023-02-28 07:15).</small>
+                <small id="employeeHelp" class="form-text text-muted">Searching will begin when the third letter is typed (2023-02-28 07:51).</small>
             </div>
         </div>
         <!-- development only -->
@@ -247,7 +247,8 @@
 
                 var msg = {
                     valid: true,
-                    value: item?JSON.stringify(item):'null'
+                    // value: item?JSON.stringify(item):'null'
+                    value: `${item.id}:${item.displayName}`
                 }
                 console.log('msg',msg)
 
