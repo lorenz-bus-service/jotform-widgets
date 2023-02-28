@@ -43,6 +43,10 @@ app.get('/widgets/find_places', (req, res) => {
     res.sendFile(`${__dirname}/widgets/com.google.find_places.html`)
 });
 
+app.get('/widgets/full_name', (req, res) => {
+    res.sendFile(`${__dirname}/widgets/com.lorenzbus.full_name.html`)
+});
+
 /*
 // use if there are multiple, distinct /api/bamboohr endpoints
 app.use("/api/bamboohr*", (req, res, next) => {
