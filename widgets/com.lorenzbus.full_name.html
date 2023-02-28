@@ -18,13 +18,14 @@
         <script src="//js.jotform.com/JotFormCustomWidget.min.js"></script>
         <script>
             $(function () {
-                console.log('page load')
+                console.log('com.lorenzbus.full_name.page load')
 
                 document.getElementById('smallVersion').innerHTML =  '2023-02-28 08:57'//Date().toLocaleString();
 
                 const inputFullName = document.getElementById('inputFullName');
+
                 inputFullName.addEventListener("change", function(){
-                    console.log('change',inputFullName.value);
+                    console.log('com.lorenzbus.full_name.change',inputFullName.value);
 
                     var msg = {
                         valid: true,
@@ -40,10 +41,10 @@
                 //always subscribe to ready event and implement widget related code
                 //inside callback function , it is the best practice while developing widgets
                 JFCustomWidget.subscribe("ready", function(){
-                    console.log('JFCustomWidget.ready');
+                    console.log('com.lorenzbus.full_name.JFCustomWidget.ready');
 
-                    var label = JFCustomWidget.getWidgetSetting('QuestionLabel');
-                    document.getElementById('labelText').innerHTML = label;
+                    // var label = JFCustomWidget.getWidgetSetting('QuestionLabel');
+                    // document.getElementById('labelText').innerHTML = label;
 
                     // parse value passed to control and extract full name
                     // var data = JFCustomWidget.getWidgetSetting('');
@@ -62,8 +63,9 @@
 
                 });
 
+                /*
                 JFCustomWidget.subscribe('populate', function(data){
-                    console.log('JFCustomWidget.populate',data);
+                    console.log('com.lorenzbus.full_name.JFCustomWidget.populate',data);
 
                     // var splitValue = data.split(".")
 
@@ -74,6 +76,7 @@
 
                     // JFCustomWidget.sendData(data)
                 });
+                */
 
             })
         </script>
