@@ -20,7 +20,7 @@
             $(function () {
                 console.log('com.lorenzbus.full_name.page load')
 
-                document.getElementById('smallVersion').innerHTML =  '2023-02-28 09:36'//Date().toLocaleString();
+                document.getElementById('smallVersion').innerHTML =  '2023-02-28 10:08'//Date().toLocaleString();
 
                 const inputFullName = document.getElementById('inputFullName');
 
@@ -57,9 +57,11 @@
 
                     const data = '999:John Doe';
                     const fullName = data.split(':')[1];
-                    console.log('fullName',fullName);
-                    
+                    // console.log('fullName',fullName);
+
+                    console.log('before',inputFullName.value);
                     inputFullName.value = fullName;
+                    console.log('after',inputFullName.value);
 
                     //subscribe to form submit event
                     JFCustomWidget.subscribe("submit", function(){
