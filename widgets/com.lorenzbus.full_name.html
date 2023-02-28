@@ -20,7 +20,7 @@
             $(function () {
                 console.log('com.lorenzbus.full_name.page load')
 
-                document.getElementById('smallVersion').innerHTML =  '2023-02-28 10:53'//Date().toLocaleString();
+                document.getElementById('smallVersion').innerHTML =  '2023-02-28 11:23'//Date().toLocaleString();
 
                 const inputFullName = document.getElementById('inputFullName');
 
@@ -43,24 +43,23 @@
                 JFCustomWidget.subscribe("ready", function(){
                     console.log('com.lorenzbus.full_name.JFCustomWidget.ready');
 
-                    const getWidgetSettings = JFCustomWidget.getWidgetSettings();
-                    console.log('getWidgetSettings',getWidgetSettings);
+                    // const getWidgetSettings = JFCustomWidget.getWidgetSettings();
+                    // console.log('getWidgetSettings',getWidgetSettings);
 
-                    const getAllQueryString = JFCustomWidget.getAllQueryString();
-                    console.log('getAllQueryString',getAllQueryString);
+                    // const getAllQueryString = JFCustomWidget.getAllQueryString();
+                    // console.log('getAllQueryString',getAllQueryString);
 
-                    const getFieldsValueByName = JFCustomWidget.getFieldsValueByName();
-                    console.log('getFieldsValueByName',getFieldsValueByName);
+                    // const getFieldsValueByName = JFCustomWidget.getFieldsValueByName();
+                    // console.log('getFieldsValueByName',getFieldsValueByName);
 
-                    const getWidgetData = JFCustomWidget.getWidgetData();
-                    console.log('getWidgetData',getWidgetData);
+                    // const getWidgetData = JFCustomWidget.getWidgetData();
+                    // console.log('getWidgetData',getWidgetData);
 
                     // var label = JFCustomWidget.getWidgetSetting('QuestionLabel');
                     // document.getElementById('labelText').innerHTML = label;
 
                     const data = '999:John Doe';
                     const fullName = data.split(':')[1];
-                    // console.log('fullName',fullName);
 
                     console.log('before',inputFullName.value);
                     inputFullName.value = fullName;
