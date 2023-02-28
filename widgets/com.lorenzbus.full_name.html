@@ -20,7 +20,7 @@
             $(function () {
                 console.log('com.lorenzbus.full_name.page load')
 
-                document.getElementById('smallVersion').innerHTML =  '2023-02-28 08:57'//Date().toLocaleString();
+                document.getElementById('smallVersion').innerHTML =  '2023-02-28 09:16'//Date().toLocaleString();
 
                 const inputFullName = document.getElementById('inputFullName');
 
@@ -42,6 +42,9 @@
                 //inside callback function , it is the best practice while developing widgets
                 JFCustomWidget.subscribe("ready", function(){
                     console.log('com.lorenzbus.full_name.JFCustomWidget.ready');
+
+                    const settings = JFCustomWidget.getWidgetSettings();
+                    console.log('settings',settings);
 
                     // var label = JFCustomWidget.getWidgetSetting('QuestionLabel');
                     // document.getElementById('labelText').innerHTML = label;
