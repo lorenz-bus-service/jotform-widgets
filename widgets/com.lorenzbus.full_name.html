@@ -57,7 +57,7 @@
 
                     const data = '999:First Last';
                     const fullName = data.split(':')[1];
-                    inputFullName.innerHTML = fullName;
+                    inputFullName.value = fullName;
 
                     //subscribe to form submit event
                     JFCustomWidget.subscribe("submit", function(){
