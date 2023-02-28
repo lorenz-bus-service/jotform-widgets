@@ -12,7 +12,7 @@
             <label for="selectEmployeeName" class="form-label">Employee Name</label>
             <div class="mb-3">
                 <select class="form-control basicAutoSelect" id="selectEmployeeName" placeholder="Type the employee's name..." autocomplete="off"></select>
-                <small id="employeeHelp" class="form-text text-muted">Searching will begin when the third letter is typed (2023-02-28 07:01).</small>
+                <small id="employeeHelp" class="form-text text-muted">Searching will begin when the third letter is typed (2023-02-28 07:15).</small>
             </div>
         </div>
         <!-- development only -->
@@ -95,6 +95,7 @@
                 }
 
                 if (companyDomain && apiKey) {
+                    console.log('fetching employee directory')
 
                     $.ajax({
                         url: "https://jotform-widgets.azurewebsites.net/api/bamboohr/employees/directory",
@@ -196,9 +197,6 @@
                         const filtered = employees.filter( e => e.displayName.toLowerCase().includes(qry.toLowerCase()) );
                         callback(filtered)
 
-                        // console.log('companyDomain',companyDomain);
-                        // console.log('apiKey',apiKey);
-
                         // ajax
                         /*
                         $.ajax({
@@ -246,6 +244,16 @@
 
                 // const employee = JSON.parse( $('#selectedEmployee')[0].innerHTML )
                 // console.log('employee',employee)
+
+                var msg = {
+                    valid: true,
+                    value: item?JSON.stringify(item):'null'
+                }
+                console.log('msg',msg)
+
+                // send value to JotForm
+                JFCustomWidget.sendData(msg);
+
             });
 
         });
