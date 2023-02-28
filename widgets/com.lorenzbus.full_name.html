@@ -43,17 +43,20 @@
                 JFCustomWidget.subscribe("ready", function(){
                     console.log('com.lorenzbus.full_name.JFCustomWidget.ready');
 
-                    // const settings = JFCustomWidget.getWidgetSettings();
-                    // console.log('settings',settings);
+                    const getWidgetSettings = JFCustomWidget.getWidgetSettings();
+                    console.log('getWidgetSettings',getWidgetSettings);
 
-                    const queryString = JFCustomWidget.getQueryString();
-                    console.log('queryString',queryString);
-                    
+                    const getAllQueryString = JFCustomWidget.getAllQueryString();
+                    console.log('getAllQueryString',getAllQueryString);
+
+                    const getFieldsValueByName = JFCustomWidget.getFieldsValueByName();
+                    console.log('getFieldsValueByName',getFieldsValueByName);
+
+                    const getWidgetData = JFCustomWidget.getWidgetData();
+                    console.log('getWidgetData',getWidgetData);
+
                     // var label = JFCustomWidget.getWidgetSetting('QuestionLabel');
                     // document.getElementById('labelText').innerHTML = label;
-
-                    // parse value passed to control and extract full name
-                    // var data = JFCustomWidget.getWidgetSetting('');
 
                     const data = '999:John Doe';
                     const fullName = data.split(':')[1];
