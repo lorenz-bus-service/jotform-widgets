@@ -20,7 +20,7 @@
             $(function () {
                 console.log('com.lorenzbus.full_name.page load')
 
-                document.getElementById('smallVersion').innerHTML =  '2023-02-28 09:16'//Date().toLocaleString();
+                document.getElementById('smallVersion').innerHTML =  '2023-02-28 09:24'//Date().toLocaleString();
 
                 const inputFullName = document.getElementById('inputFullName');
 
@@ -43,9 +43,12 @@
                 JFCustomWidget.subscribe("ready", function(){
                     console.log('com.lorenzbus.full_name.JFCustomWidget.ready');
 
-                    const settings = JFCustomWidget.getWidgetSettings();
-                    console.log('settings',settings);
+                    // const settings = JFCustomWidget.getWidgetSettings();
+                    // console.log('settings',settings);
 
+                    const queryString = JFCustomWidget.getQueryString();
+                    console.log('queryString',queryString);
+                    
                     // var label = JFCustomWidget.getWidgetSetting('QuestionLabel');
                     // document.getElementById('labelText').innerHTML = label;
 
