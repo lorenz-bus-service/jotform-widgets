@@ -8,8 +8,8 @@
     <body>
         <div class="container">
             <div class="form-group">
-                <label id="labelText" for="userInput" class="form-label">userInput</label><br/>
-                <input id="userInput" type="text" class="form-text"><br/>
+                <label id="labelText" for="inputFullName" class="form-label">Full Name</label><br/>
+                <input id="inputFullName" type="text" class="form-text"><br/>
                 <small id="smallVersion" class="form-text text-muted"></small>
             </div>
         </div>
@@ -20,15 +20,15 @@
             $(function () {
                 console.log('page load')
 
-                document.getElementById('smallVersion').innerHTML =  '2023-02-28 08:33'//Date().toLocaleString();
+                document.getElementById('smallVersion').innerHTML =  '2023-02-28 08:57'//Date().toLocaleString();
 
-                const userInput = document.getElementById('userInput');
-                userInput.addEventListener("change", function(){
-                    console.log('change',userInput.value);
+                const inputFullName = document.getElementById('inputFullName');
+                inputFullName.addEventListener("change", function(){
+                    console.log('change',inputFullName.value);
 
                     var msg = {
                         valid: true,
-                        value: userInput.value
+                        value: inputFullName.value
                     }
                     console.log('msg',msg)
 
@@ -40,38 +40,27 @@
                 //always subscribe to ready event and implement widget related code
                 //inside callback function , it is the best practice while developing widgets
                 JFCustomWidget.subscribe("ready", function(){
+                    console.log('JFCustomWidget.ready');
 
                     var label = JFCustomWidget.getWidgetSetting('QuestionLabel');
                     document.getElementById('labelText').innerHTML = label;
+
+                    // parse value passed to control and extract full name
+                    // var data = JFCustomWidget.getWidgetSetting('');
+                    // const fullName = data.split(':')[1];
+                    // inputFullName.innerHTML = fullName;
 
                     //subscribe to form submit event
                     JFCustomWidget.subscribe("submit", function(){
                         var msg = {
                             valid: true,
-                            value: document.getElementById('userInput').value
+                            value: inputFullName.value
                         }
                         // send value to JotForm
                         JFCustomWidget.sendSubmit(msg);
                     });
 
                 });
-
-                // userInput.addEventListener("keypress", function(){
-                //     console.log('keypress',userInput.value);
-
-                //     var msg = {
-                //         //you should valid attribute to data for JotForm
-                //         //to be able to use youw widget as required
-                //         valid: true,
-                //         value: userInput.value
-                //     }
-
-                //     console.log('msg',msg)
-
-                //     // send value to JotForm
-                //     JFCustomWidget.sendSubmit(msg);
-
-                // },false); 
 
                 JFCustomWidget.subscribe('populate', function(data){
                     console.log('JFCustomWidget.populate',data);
