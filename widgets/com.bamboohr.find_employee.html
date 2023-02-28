@@ -12,7 +12,7 @@
             <label for="selectEmployeeName" class="form-label">Employee Name</label>
             <div class="mb-3">
                 <select class="form-control basicAutoSelect" id="selectEmployeeName" placeholder="Type the employee's name..." autocomplete="off"></select>
-                <small id="employeeHelp" class="form-text text-muted">Searching will begin when the third letter is typed (2023-02-23 15:20).</small>
+                <small id="employeeHelp" class="form-text text-muted">Searching will begin when the third letter is typed (2023-02-28 07:01).</small>
             </div>
         </div>
         <!-- development only -->
@@ -62,7 +62,6 @@
 
             const selectEmployeeName = document.getElementById('selectEmployeeName');
             selectEmployeeName.addEventListener("change", function(){
-
                 console.log('change',selectEmployeeName.value);
 
                 var msg = {
@@ -71,11 +70,9 @@
                     valid: true,
                     value: selectEmployeeName.value
                 }
-
                 console.log('msg',msg)
 
                 // send value to JotForm
-                console.log('sendData')
                 JFCustomWidget.sendData(msg);
 
             },true); 
