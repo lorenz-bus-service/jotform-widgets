@@ -9,7 +9,7 @@
         <div class="container">
             <div class="form-group">
                 <label id="labelText" for="inputFullName" class="form-label">Full Name</label><br/>
-                <input id="inputFullName" type="text" class="form-text"><br/>
+                <input id="inputFullName" type="text" class="form-text" readonly><br/>
                 <small id="smallVersion" class="form-text text-muted"></small>
             </div>
         </div>
@@ -20,7 +20,7 @@
             $(function () {
                 console.log('com.lorenzbus.full_name.page load')
 
-                document.getElementById('smallVersion').innerHTML =  '2023-02-28 09:24'//Date().toLocaleString();
+                document.getElementById('smallVersion').innerHTML =  '2023-02-28 09:36'//Date().toLocaleString();
 
                 const inputFullName = document.getElementById('inputFullName');
 
@@ -54,8 +54,10 @@
 
                     // parse value passed to control and extract full name
                     // var data = JFCustomWidget.getWidgetSetting('');
-                    // const fullName = data.split(':')[1];
-                    // inputFullName.innerHTML = fullName;
+
+                    const data = '999:First Last';
+                    const fullName = data.split(':')[1];
+                    inputFullName.innerHTML = fullName;
 
                     //subscribe to form submit event
                     JFCustomWidget.subscribe("submit", function(){
