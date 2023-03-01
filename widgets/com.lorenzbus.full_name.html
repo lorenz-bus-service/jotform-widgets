@@ -80,7 +80,7 @@
                 JFCustomWidget.subscribe('populate', function(data){
                     console.log('com.lorenzbus.full_name.JFCustomWidget.populate',data);
 
-                    var tokens = data.split(":")
+                    var tokens = data.value.split(":")
                     console.log('tokens',tokens)
 
                     const fullName = tokens[1]
