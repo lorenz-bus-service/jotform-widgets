@@ -58,12 +58,12 @@
                     // var label = JFCustomWidget.getWidgetSetting('QuestionLabel');
                     // document.getElementById('labelText').innerHTML = label;
 
-                    const data = '999:John Doe';
-                    const fullName = data.split(':')[1];
+                    // const data = '999:John Doe';
+                    // const fullName = data.split(':')[1];
 
-                    console.log('before',inputFullName.value);
-                    inputFullName.value = fullName;
-                    console.log('after',inputFullName.value);
+                    // console.log('before',inputFullName.value);
+                    // inputFullName.value = fullName;
+                    // console.log('after',inputFullName.value);
 
                     //subscribe to form submit event
                     JFCustomWidget.subscribe("submit", function(){
@@ -77,20 +77,23 @@
 
                 });
 
-                /*
                 JFCustomWidget.subscribe('populate', function(data){
                     console.log('com.lorenzbus.full_name.JFCustomWidget.populate',data);
 
-                    // var splitValue = data.split(".")
+                    var tokens = data.split(":")
+                    console.log('tokens',tokens)
 
-                    // var data = {
-                    //     valid: true,
-                    //     value: splitValue
-                    // }
+                    const fullName = tokens[1]
+                    inputFullName.value = fullName;
 
-                    // JFCustomWidget.sendData(data)
+                    var data = {
+                        valid: true,
+                        value: fullName
+                    }
+                    console.log('data',data)
+
+                    JFCustomWidget.sendData(data)
                 });
-                */
 
             })
         </script>
