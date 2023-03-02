@@ -8,6 +8,7 @@
   </head>
   <body>
     <div class="container">
+
         <div class="form-group">
             <label for="selectEmployeeName" class="form-label">Employee Name</label>
             <div class="mb-3">
@@ -15,18 +16,6 @@
                 <small id="employeeHelp" class="form-text text-muted">Searching will begin when the third letter is typed.</small>
             </div>
         </div>
-        <!-- development only -->
-        <!--
-        <div class="form-group">
-            <label for="labelCompanyDomain" class="form-label">Company Domain</label>
-            <span id="labelCompanyDomain" class="form-text"></span><br/>
-        </div>
-        <div class="form-group">
-            <label for="labelApiKey" class="form-label">API Key</label>
-            <span id="labelApiKey" class="form-text"></span><br/>
-        </div>
-        -->
-        <!-- /development only -->
 
         <!-- TODO: make hidden -->
         <div class="form-group">
@@ -50,25 +39,13 @@
             let apiKey = null;
             let employees = [];
 
-            /*
-            $.ajax({
-                url: "https://jotform-widgets.azurewebsites.net/api/bamboohr/employees/directory",
-                type: 'GET',
-                dataType: 'json', // added data type
-                success: function(res) {
-                    // console.log(res);
-                    employees = res.employees
-                }
-            });
-            */
-
             const selectEmployeeName = document.getElementById('selectEmployeeName');
+
+            /*
             selectEmployeeName.addEventListener("change", function(){
                 console.log('change',selectEmployeeName.value);
 
                 var msg = {
-                    //you should valid attribute to data for JotForm
-                    //to be able to use youw widget as required
                     valid: true,
                     value: selectEmployeeName.value
                 }
@@ -78,23 +55,18 @@
                 JFCustomWidget.sendData(msg);
 
             },true); 
+            */
 
             //always subscribe to ready event and implement widget related code
             //inside callback function , it is the best practice while developing widgets
             JFCustomWidget.subscribe("ready", function(){
                 console.log('JFCustomWidget.ready')
 
-                companyDomain = JFCustomWidget.getWidgetSetting('companyDomain');
-                // development only
-                // if (companyDomain) {
-                //     document.getElementById('labelCompanyDomain').textContent = companyDomain;
-                // }
+                companyDomain = JFCustomWidget.getWidgetSetting('x-bamboohr-subdomain');
+                console.log('x-bamboohr-subdomain',companyDomain)
 
-                apiKey = JFCustomWidget.getWidgetSetting('apiKey');
-                // development only
-                // if (apiKey) {
-                //     document.getElementById('labelApiKey').textContent = apiKey;
-                // }
+                apiKey = JFCustomWidget.getWidgetSetting('x-bamboohr-api-key');
+                console.log('x-bamboohr-api-key',apiKey)
 
                 if (companyDomain && apiKey) {
                     console.log('fetching employee directory')
@@ -124,8 +96,6 @@
                     // console.log('employee',employee)
 
                     var msg = {
-                        //you should valid attribute to data for JotForm
-                        //to be able to use you widget as required
                         valid: true,
                         value: $('#selectedEmployee')[0].innerHTML
                         // value: document.getElementById('employeeInput').value
@@ -135,51 +105,11 @@
                     JFCustomWidget.sendSubmit(msg);
                 });
 
-                JFCustomWidget.subscribe('populate', function(data){
-                    console.log('JFCustomWidget.populate')
-
-                    var msg = {
-                        valid: true,
-                        value: data
-                    }
-                    console.log('msg',msg)
-
-                    // send value to JotForm
-                    JFCustomWidget.sendData(msg);
-                });
-
             });
-
-            /*
-            response:
-            {
-                "fields": [
-                    {
-                        "id": "displayName",
-                        "type": "text",
-                        "name": "Display name"
-                    },
-                    ...
-                ],
-                "employees": [
-                    {
-                        "id": "123",
-                        "displayName": "First Last",
-                        "firstName": "First",
-                        "lastName": "Last",
-                        "preferredName": null,
-                        "jobTitle": "Driver",
-                        "pronouns": null,
-                        "photoUploaded": true,
-                        "photoUrl": "https://images.bamboohr.com/123456/photos/123.jpg?...",
-                        "canUploadPhoto": 1
-                    },
-                    ...
-                ]
-            }
-            */
             
             $('.basicAutoSelect').autoComplete({
+                noResultsText: 'Employee not found',
+                preventEnter: true,
                 resolver: 'custom',
                 formatResult: function (item) {
                     console.log('***** formatResult *****');
@@ -234,23 +164,16 @@
                 }
             });
 
-            // $('.basicAutoSelect').on('change', function (e) {
-            //     console.log('***** change *****');
-            // });
-
             /* when a select-list option has been chosen, save the JSON to the "selectedEmployee" element */
             $('.basicAutoSelect').on('autocomplete.select', function (evt, item) {
                 console.log('***** autocomplete.select *****');
 
-                $('#selectedEmployee').html(item?JSON.stringify(item):'null');
-
-                // const employee = JSON.parse( $('#selectedEmployee')[0].innerHTML )
-                // console.log('employee',employee)
+                // $('#selectedEmployee').html(item?JSON.stringify(item):'null');
 
                 var msg = {
                     valid: true,
-                    // value: item?JSON.stringify(item):'null'
                     value: `${item.id}:${item.displayName}`
+                    // value: item?JSON.stringify(item):'null'
                 }
                 console.log('msg',msg)
 
