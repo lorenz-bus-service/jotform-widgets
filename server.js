@@ -84,8 +84,8 @@ Querystrings:
 app.get('/employees/directory', (req, res) => {
 
     // https://stackoverflow.com/questions/25462717/cache-control-for-dynamic-data-express-js#25464645
-    const age = 5 * 60 // five minutes as seconds
-    res.set('Cache-Control', `public, max-age=${age}`);
+    // const age = 5 * 60 // five minutes as seconds
+    // res.set('Cache-Control', `public, max-age=${age}`);
 
     // make async call to BambooHr's API
     (async () => {
