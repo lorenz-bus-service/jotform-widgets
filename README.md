@@ -7,6 +7,8 @@ HTML and JavaScript files to be used as Jotform widgets
 
 ```bash
 printenv
+
+env -0 | sort -z | tr '\0' '\n'
 ```
 
 ### create HOST variable
