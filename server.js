@@ -207,7 +207,7 @@ app.use("/api/bamboohr",
             proxyRes.on('end', function() {
                 data = JSON.parse(Buffer.concat(body).toString());
                 // employees = data.employees
-                const filtered = data.employees.filter( e => e.displayName.toLowerCase().includes(req.query['q'].toLowerCase()) );
+                const filtered = req.query['q'] ? data.employees.filter( e => e.displayName.toLowerCase().includes(req.query['q'].toLowerCase()) ) : data.employees;
                 // res.end(JSON.stringify(filtered));
                 // res.end(Buffer.concat(data).toString());
                 res.status(200).json(filtered);
