@@ -35,10 +35,39 @@ app.get('/api', function (req, res) {
     return res.send("/api");
 })
 
+/*
+https://bootstrap-autocomplete.readthedocs.io/en/latest/index.html
+https://raw.githack.com/xcash/bootstrap-autocomplete/master/dist/latest/index.html
+*/
 app.get('/widgets/find_employee', (req, res) => {
-    // res.sendFile(`${__dirname}/widgets/com.bamboohr.find_employee.html`)
-    res.render(`${__dirname}/widgets/com.bamboohr.find_employee.ejs`)
+
+    // make async call to BambooHr's API
+    (async () => {
+
+        console.log('headers',req.headers)
+
+        const url = `https://api.bamboohr.com/api/gateway.php/${ process.env.BAMBOOHR_API_SUBDOMAIN }/v1/employees/directory`
+        const headers = {
+            Accept: 'application/json',
+            Authorization: "Basic " + Buffer.from(process.env.BAMBOOHR_API_KEY + ":password").toString('base64')
+        }
+
+        const bhr =  await fetch(url, { method: 'GET', headers: headers})
+
+        if (bhr.ok) {
+            const data = await bhr.json();
+
+            res.render(`${__dirname}/widgets/com.bamboohr.find_employee.ejs`, {employees: data.employees})
+        }
+
+    })()
+
 });
+
+// app.get('/widgets/find_employee', (req, res) => {
+//     // res.sendFile(`${__dirname}/widgets/com.bamboohr.find_employee.html`)
+//     res.render(`${__dirname}/widgets/com.bamboohr.find_employee.ejs`)
+// });
 
 app.get('/widgets/find_places', (req, res) => {
     res.sendFile(`${__dirname}/widgets/com.google.find_places.html`)
@@ -49,39 +78,10 @@ app.get('/widgets/full_name', (req, res) => {
 });
 
 /*
-https://bootstrap-autocomplete.readthedocs.io/en/latest/index.html
-https://raw.githack.com/xcash/bootstrap-autocomplete/master/dist/latest/index.html
-*/
-app.get('/widgets/craig', (req, res) => {
-
-    res.render(`${__dirname}/widgets/com.bamboohr.find_employee.ejs`)
-
-    // make async call to BambooHr's API
-    // (async () => {       
-
-    //     const url = `https://api.bamboohr.com/api/gateway.php/${ process.env.BAMBOOHR_API_SUBDOMAIN }/v1/employees/directory`
-    //     const headers = {
-    //         Accept: 'application/json',
-    //         Authorization: "Basic " + Buffer.from(process.env.BAMBOOHR_API_KEY + ":password").toString('base64')
-    //     }
-
-    //     const bhr =  await fetch(url, { method: 'GET', headers: headers})
-
-    //     if (bhr.ok) {
-    //         const data = await bhr.json();
-
-    //         res.render(`${__dirname}/widgets/find_employee.ejs`, {employees: data.employees})
-    //     }
-
-    // })()
-
-});
-
-/*
 Querystrings:
     q - the text to use to filter the displayName
 */
-app.get('/api/bamboohr/employees/directory', (req, res) => {
+app.get('/employees/directory', (req, res) => {
 
     // https://stackoverflow.com/questions/25462717/cache-control-for-dynamic-data-express-js#25464645
     const age = 5 * 60 // five minutes as seconds
