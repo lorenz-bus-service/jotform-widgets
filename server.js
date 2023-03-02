@@ -39,6 +39,14 @@ app.get('/api', function (req, res) {
 https://bootstrap-autocomplete.readthedocs.io/en/latest/index.html
 https://raw.githack.com/xcash/bootstrap-autocomplete/master/dist/latest/index.html
 */
+/*
+                <select class="form-select" id="selectEmployeeName" placeholder="Type the employee's name..." autocomplete="off">
+                    <option>Choose an employee</option>
+                    <% employees.forEach(function(employee) { %>
+                        <option value="<%= employee.id %>" data-first-name="<%= employee.firstName %>" data-last-name="<%= employee.lastName %>"><%= employee.displayName %></option>
+                    <% }); %>
+                </select>
+
 app.get('/widgets/find_employee', (req, res) => {
 
     // make async call to BambooHr's API
@@ -73,11 +81,12 @@ app.get('/widgets/find_employee', (req, res) => {
     })()
 
 });
+*/
 
-// app.get('/widgets/find_employee', (req, res) => {
-//     // res.sendFile(`${__dirname}/widgets/com.bamboohr.find_employee.html`)
-//     res.render(`${__dirname}/widgets/com.bamboohr.find_employee.ejs`)
-// });
+app.get('/widgets/find_employee', (req, res) => {
+    // res.sendFile(`${__dirname}/widgets/com.bamboohr.find_employee.html`)
+    res.render(`${__dirname}/widgets/com.bamboohr.find_employee.ejs`)
+});
 
 app.get('/widgets/find_places', (req, res) => {
     res.sendFile(`${__dirname}/widgets/com.google.find_places.html`)
@@ -91,6 +100,7 @@ app.get('/widgets/full_name', (req, res) => {
 Querystrings:
     q - the text to use to filter the displayName
 */
+/*
 app.get('/employees/directory', (req, res) => {
 
     // https://stackoverflow.com/questions/25462717/cache-control-for-dynamic-data-express-js#25464645
@@ -121,13 +131,6 @@ app.get('/employees/directory', (req, res) => {
     })()
 
 });
-
-/*
-                <select class="form-select" id="selectEmployeeName" placeholder="Type the employee's name..." autocomplete="off">
-                    <% employees.forEach(function(employee) { %>
-                        <option value="<%= employee.employeeNumber %>"><%= employee.displayName %></option>
-                  <% }); %>
-                </select>
 */
 
 /*
@@ -166,7 +169,8 @@ app.use("/api/bamboohr",
             console.log('x-subdomain',req.headers['x-subdomain'])
 
             // modify the target to include the subdomain
-            const target = `https://api.bamboohr.com/api/gateway.php/${req.headers['x-subdomain']}/v1`;
+            const target = `https://api.bamboohr.com/api/gateway.php/${process.env.BAMBOOHR_API_SUBDOMAIN}/v1`;
+            // const target = `https://api.bamboohr.com/api/gateway.php/${req.headers['x-subdomain']}/v1`;
             console.log('target:',target);
             return target;
         },
@@ -178,19 +182,36 @@ app.use("/api/bamboohr",
             // Object.keys(req.headers).forEach( k => console.log(`${k}:`, req.headers[k]) );
 
             // return UNAUTHORIZED [401] if the request is missing the x-subdomain or x-api-key headers
-            if (!req.headers['x-subdomain'] ) {
-                res.status(401).send({message: 'missing subdomain'});
-            }
-            else if (!req.headers['x-api-key'] ) {
-                res.status(401).send({message: 'missing API key'});
-            }
+            // if (!req.headers['x-subdomain'] ) {
+            //     res.status(401).send({message: 'missing subdomain'});
+            // }
+            // else if (!req.headers['x-api-key'] ) {
+            //     res.status(401).send({message: 'missing API key'});
+            // }
         
             // add an authorization header
-            // const auth = "Basic " + Buffer.from(process.env.BAMBOOHR_API_KEY + ":password").toString('base64')
-            const authorization = "Basic " + Buffer.from(req.headers['x-api-key'] + ":password").toString('base64')
+            const authorization = "Basic " + Buffer.from(process.env.BAMBOOHR_API_KEY + ":password").toString('base64')
+            // const authorization = "Basic " + Buffer.from(req.headers['x-api-key'] + ":password").toString('base64')
             console.log('authorization:',authorization)
             proxyReq.setHeader('Authorization', authorization);
 
+        },
+        selfHandleResponse: true, // so that the onProxyRes takes care of sending the response
+        onProxyRes: function(proxyRes, req, res) {
+            console.log('***** onProxyRes *****');
+
+            let body = [];
+            proxyRes.on('data', function(data) {
+                body.push(data);
+            });
+            proxyRes.on('end', function() {
+                data = JSON.parse(Buffer.concat(body).toString());
+                // employees = data.employees
+                const filtered = data.employees.filter( e => e.displayName.toLowerCase().includes(req.query['q'].toLowerCase()) );
+                // res.end(JSON.stringify(filtered));
+                // res.end(Buffer.concat(data).toString());
+                res.status(200).json(filtered);
+            });
         }
     })
 );
