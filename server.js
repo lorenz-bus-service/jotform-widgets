@@ -44,22 +44,22 @@ app.get('/widgets/find_employee', (req, res) => {
     // make async call to BambooHr's API
     (async () => {
 
-        console.log('headers',req.headers)
+        // console.log('headers',req.headers)
 
         // return UNAUTHORIZED [401] if the request is missing the x-subdomain or x-api-key headers
-        if (!req.headers['companydomain'] ) {
-            res.status(401).send({message: 'missing subdomain'});
-        }
-        else if (!req.headers['apikey'] ) {
-            res.status(401).send({message: 'missing API key'});
-        }
+        // if (!req.headers['companydomain'] ) {
+        //     res.status(401).send({message: 'missing subdomain'});
+        // }
+        // else if (!req.headers['apikey'] ) {
+        //     res.status(401).send({message: 'missing API key'});
+        // }
 
-        const url = `https://api.bamboohr.com/api/gateway.php/${ req.headers['companydomain'] }/v1/employees/directory`
-        // const url = `https://api.bamboohr.com/api/gateway.php/${ process.env.BAMBOOHR_API_SUBDOMAIN }/v1/employees/directory`
+        // const url = `https://api.bamboohr.com/api/gateway.php/${ req.headers['companydomain'] }/v1/employees/directory`
+        const url = `https://api.bamboohr.com/api/gateway.php/${ process.env.BAMBOOHR_API_SUBDOMAIN }/v1/employees/directory`
         const headers = {
             Accept: 'application/json',
-            Authorization: "Basic " + Buffer.from(req.headers['apikey'] + ":password").toString('base64')
-            // Authorization: "Basic " + Buffer.from(process.env.BAMBOOHR_API_KEY + ":password").toString('base64')
+            // Authorization: "Basic " + Buffer.from(req.headers['apikey'] + ":password").toString('base64')
+            Authorization: "Basic " + Buffer.from(process.env.BAMBOOHR_API_KEY + ":password").toString('base64')
         }
 
         const bhr =  await fetch(url, { method: 'GET', headers: headers})
