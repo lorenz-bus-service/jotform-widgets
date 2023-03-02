@@ -4,7 +4,6 @@
   "description": "Node.js app to serve Jotform widgets.",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js"
   },
   "author": "Craig Buchanan",
@@ -13,8 +12,7 @@
     "ejs": "^3.1.8",
     "express": "^4.18.2",
     "http-proxy-middleware": "^2.0.6",
-    "morgan": "^1.10.0",
-    "body-parser": "^1.20.1"
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
