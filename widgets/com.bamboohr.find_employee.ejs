@@ -55,11 +55,11 @@
                 JFCustomWidget.subscribe("ready", function(){
                     console.log('JFCustomWidget.ready')
 
-                    companyDomain = JFCustomWidget.getWidgetSetting('companyDomain');
-                    console.log('companyDomain',companyDomain)
+                    companyDomain = JFCustomWidget.getWidgetSetting('x-bamboohr-subdomain');
+                    console.log('x-bamboohr-subdomain',companyDomain)
 
-                    apiKey = JFCustomWidget.getWidgetSetting('apiKey');
-                    console.log('apiKey',apiKey)
+                    apiKey = JFCustomWidget.getWidgetSetting('x-bamboohr-api-key');
+                    console.log('x-bamboohr-api-key',apiKey)
 
                     //subscribe to form submit event
                     JFCustomWidget.subscribe("submit", function(){
