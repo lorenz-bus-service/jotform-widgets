@@ -84,8 +84,8 @@ app.get('/widgets/find_employee', (req, res) => {
 */
 
 app.get('/widgets/find_employee', (req, res) => {
-    // res.sendFile(`${__dirname}/widgets/com.bamboohr.find_employee.html`)
-    res.render(`${__dirname}/widgets/com.bamboohr.find_employee.ejs`)
+    res.sendFile(`${__dirname}/widgets/com.bamboohr.find_employee.html`)
+    // res.render(`${__dirname}/widgets/com.bamboohr.find_employee.ejs`)
 });
 
 app.get('/widgets/find_places', (req, res) => {
@@ -205,12 +205,14 @@ app.use("/api/bamboohr",
                 body.push(data);
             });
             proxyRes.on('end', function() {
+                // create JSON from raw
                 data = JSON.parse(Buffer.concat(body).toString());
-                // employees = data.employees
-                const filtered = req.query['q'] ? data.employees.filter( e => e.displayName.toLowerCase().includes(req.query['q'].toLowerCase()) ) : data.employees;
-                // res.end(JSON.stringify(filtered));
-                // res.end(Buffer.concat(data).toString());
-                res.status(200).json(filtered);
+                
+                // filter the employees node
+                const employees = req.query['q'] ? data.employees.filter( e => e.displayName.toLowerCase().includes(req.query['q'].toLowerCase()) ) : data.employees;
+
+                // return the employees
+                res.status(200).json(employees);
             });
         }
     })
