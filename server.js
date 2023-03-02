@@ -36,6 +36,7 @@ app.get('/api', function (req, res) {
 })
 
 app.get('/widgets/find_employee', (req, res) => {
+    // https://www.topcoder.com/thrive/articles/using-ejs-template-engine-with-express-js
     // res.sendFile(`${__dirname}/widgets/com.bamboohr.find_employee.html`)
     res.render(`${__dirname}/widgets/com.bamboohr.find_employee.ejs`)
 });
