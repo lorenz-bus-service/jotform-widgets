@@ -81,7 +81,7 @@ app.get('/widgets/craig', (req, res) => {
 Querystrings:
     q - the text to use to filter the displayName
 */
-app.get('/api/bamboohr/employees/directory', (req, res) => {
+app.get('/employees/directory', (req, res) => {
 
     // https://stackoverflow.com/questions/25462717/cache-control-for-dynamic-data-express-js#25464645
     const age = 5 * 60 // five minutes as seconds
