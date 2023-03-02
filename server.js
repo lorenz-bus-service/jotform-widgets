@@ -209,10 +209,10 @@ app.use("/api/bamboohr",
                 data = JSON.parse(Buffer.concat(body).toString());
                 
                 // filter the employees node
-                const employees = req.query['q'] ? data.employees.filter( e => e.displayName.toLowerCase().includes(req.query['q'].toLowerCase()) ) : data.employees;
+                // const employees = req.query['q'] ? data.employees.filter( e => e.displayName.toLowerCase().includes(req.query['q'].toLowerCase()) ) : data.employees;
 
                 // return the employees
-                res.status(200).json(employees);
+                res.status(200).json(data.employees);
             });
         }
     })
