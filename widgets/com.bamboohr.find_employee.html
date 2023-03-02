@@ -59,26 +59,34 @@
             JFCustomWidget.subscribe("ready", function(){
                 console.log('JFCustomWidget.ready')
 
-                companyDomain = JFCustomWidget.getWidgetSetting('x-bamboohr-subdomain');
-                console.log('x-bamboohr-subdomain',companyDomain)
+                const subdomain = JFCustomWidget.getWidgetSetting('x-bamboohr-subdomain');
+                console.log('x-bamboohr-subdomain',subdomain)
 
-                apiKey = JFCustomWidget.getWidgetSetting('x-bamboohr-api-key');
+                const apiKey = JFCustomWidget.getWidgetSetting('x-bamboohr-api-key');
                 console.log('x-bamboohr-api-key',apiKey)
 
-                if (companyDomain && apiKey) {
+                if (subdomain && apiKey) {
                     console.log('fetching employee directory')
+
+                    const headers = {
+                        Accept: 'application/json',
+                        'x-bamboohr-subdomain': subdomain,
+                        'x-bamboohr-api-key': apiKey,
+                    }
+                    console.log('headers',headers)
 
                     $.ajax({
                         url: "https://jotform-widgets.azurewebsites.net/api/bamboohr/employees/directory",
                         type: 'GET',
                         headers: { 
-                                Accept: 'application/json',
-                                'x-bamboohr-subdomain': companyDomain,
-                                'x-bamboohr-api-key': apiKey,
-                            },
+                            Accept: 'application/json',
+                            'x-bamboohr-subdomain': subdomain,
+                            'x-bamboohr-api-key': apiKey,
+                        },
                         dataType: 'json',
                         success: function(res) {
-                            console.log('ajax.success',res.employees.length)
+                            console.log('res',res)
+
                             employees = res.employees
                         }
                     });
@@ -92,11 +100,20 @@
                     // const employee = JSON.parse( $('#selectedEmployee')[0].innerHTML )
                     // console.log('employee',employee)
 
+                    const selectedOption = selectEmployeeName.options[selectEmployeeName.selectedIndex]
+                    
                     var msg = {
                         valid: true,
-                        value: $('#selectedEmployee')[0].innerHTML
-                        // value: document.getElementById('employeeInput').value
+                        value: `${selectedOption.value}:${selectedOption.text}`
+                        // value: `${selectedOption.value}:${selectedOption.text}:${selectedOption.getAttribute('data-first-name')}:${selectedOption.getAttribute('data-last-name')}`
                     }
+                    console.log('msg',msg)
+
+                    // var msg = {
+                    //     valid: true,
+                    //     value: $('#selectedEmployee')[0].innerHTML
+                    //     // value: document.getElementById('employeeInput').value
+                    // }
 
                     // send value to JotForm
                     JFCustomWidget.sendSubmit(msg);
