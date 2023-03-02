@@ -13,10 +13,19 @@
             <label for="selectEmployeeName" class="form-label">Employee Name</label>
             <div class="mb-3">
                 
+                <!--
                 <div class="mb-3">
                     <select class="form-control basicAutoComplete" id="selectEmployeeName" data-url="/employees/directory" placeholder="Type the employee's name..." autocomplete="off"></select>
                     <small id="employeeHelp" class="form-text text-muted">Searching will begin when the third letter is typed.</small>
                 </div>
+                -->
+
+                <select class="form-select" id="selectEmployeeName" placeholder="Type the employee's name..." autocomplete="off">
+                    <option>Choose an employee</option>
+                    <% employees.forEach(function(employee) { %>
+                        <option value="<%= employee.id %>" data-first-name="<%= employee.firstName %>" data-last-name="<%= employee.lastName %>"><%= employee.displayName %></option>
+                    <% }); %>
+                </select>
 
             </div>
         </div>
@@ -32,7 +41,24 @@
             $(function () {
 
                 const selectEmployeeName = document.getElementById('selectEmployeeName');
-                
+
+                selectEmployeeName.addEventListener("change", function(){
+                    console.log('selectEmployeeName.change');
+
+                    const selectedOption = selectEmployeeName.options[selectEmployeeName.selectedIndex]
+                    
+                    var msg = {
+                        valid: true,
+                        value: `${selectedOption.value}:${selectedOption.text}`
+                        // value: `${selectedOption.value}:${selectedOption.text}:${selectedOption.getAttribute('data-first-name')}:${selectedOption.getAttribute('data-last-name')}`
+                    }
+                    console.log('msg',msg)
+
+                    // send value to JotForm
+                    JFCustomWidget.sendData(msg);
+
+                },true); 
+
                 //always subscribe to ready event and implement widget related code
                 //inside callback function , it is the best practice while developing widgets
                 JFCustomWidget.subscribe("ready", function(){
@@ -48,15 +74,14 @@
                     JFCustomWidget.subscribe("submit", function(){
                         console.log('JFCustomWidget.submit')
 
-                        console.log('selectEmployeeName',selectEmployeeName)
-
+                        const selectedOption = selectEmployeeName.options[selectEmployeeName.selectedIndex]
+                    
                         var msg = {
-                            //you should valid attribute to data for JotForm
-                            //to be able to use you widget as required
                             valid: true,
-                            // value: $('#selectedEmployee')[0].innerHTML
-                            // value: document.getElementById('employeeInput').value
+                            value: `${selectedOption.value}:${selectedOption.text}`
+                            // value: `${selectedOption.value}:${selectedOption.text}:${selectedOption.getAttribute('data-first-name')}:${selectedOption.getAttribute('data-last-name')}`
                         }
+                        console.log('msg',msg)
 
                         // send value to JotForm
                         JFCustomWidget.sendSubmit(msg);

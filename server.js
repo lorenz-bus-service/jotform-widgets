@@ -35,11 +35,39 @@ app.get('/api', function (req, res) {
     return res.send("/api");
 })
 
+/*
+https://bootstrap-autocomplete.readthedocs.io/en/latest/index.html
+https://raw.githack.com/xcash/bootstrap-autocomplete/master/dist/latest/index.html
+*/
 app.get('/widgets/find_employee', (req, res) => {
-    // https://www.topcoder.com/thrive/articles/using-ejs-template-engine-with-express-js
-    // res.sendFile(`${__dirname}/widgets/com.bamboohr.find_employee.html`)
-    res.render(`${__dirname}/widgets/com.bamboohr.find_employee.ejs`)
+
+    // make async call to BambooHr's API
+    (async () => {
+
+        console.log('headers',req.headers)
+
+        const url = `https://api.bamboohr.com/api/gateway.php/${ process.env.BAMBOOHR_API_SUBDOMAIN }/v1/employees/directory`
+        const headers = {
+            Accept: 'application/json',
+            Authorization: "Basic " + Buffer.from(process.env.BAMBOOHR_API_KEY + ":password").toString('base64')
+        }
+
+        const bhr =  await fetch(url, { method: 'GET', headers: headers})
+
+        if (bhr.ok) {
+            const data = await bhr.json();
+
+            res.render(`${__dirname}/widgets/com.bamboohr.find_employee.ejs`, {employees: data.employees})
+        }
+
+    })()
+
 });
+
+// app.get('/widgets/find_employee', (req, res) => {
+//     // res.sendFile(`${__dirname}/widgets/com.bamboohr.find_employee.html`)
+//     res.render(`${__dirname}/widgets/com.bamboohr.find_employee.ejs`)
+// });
 
 app.get('/widgets/find_places', (req, res) => {
     res.sendFile(`${__dirname}/widgets/com.google.find_places.html`)
@@ -47,35 +75,6 @@ app.get('/widgets/find_places', (req, res) => {
 
 app.get('/widgets/full_name', (req, res) => {
     res.sendFile(`${__dirname}/widgets/com.lorenzbus.full_name.html`)
-});
-
-/*
-https://bootstrap-autocomplete.readthedocs.io/en/latest/index.html
-https://raw.githack.com/xcash/bootstrap-autocomplete/master/dist/latest/index.html
-*/
-app.get('/widgets/craig', (req, res) => {
-
-    res.render(`${__dirname}/widgets/com.bamboohr.find_employee.ejs`)
-
-    // make async call to BambooHr's API
-    // (async () => {       
-
-    //     const url = `https://api.bamboohr.com/api/gateway.php/${ process.env.BAMBOOHR_API_SUBDOMAIN }/v1/employees/directory`
-    //     const headers = {
-    //         Accept: 'application/json',
-    //         Authorization: "Basic " + Buffer.from(process.env.BAMBOOHR_API_KEY + ":password").toString('base64')
-    //     }
-
-    //     const bhr =  await fetch(url, { method: 'GET', headers: headers})
-
-    //     if (bhr.ok) {
-    //         const data = await bhr.json();
-
-    //         res.render(`${__dirname}/widgets/find_employee.ejs`, {employees: data.employees})
-    //     }
-
-    // })()
-
 });
 
 /*
