@@ -54,7 +54,7 @@ app.get('/widgets/find_employee', (req, res) => {
 
         // console.log('headers',req.headers)
 
-        // return UNAUTHORIZED [401] if the request is missing the x-subdomain or x-api-key headers
+        // return UNAUTHORIZED [401] if the request is missing the x-bamboohr-subdomain or x-bamboohr-api-key headers
         // if (!req.headers['companydomain'] ) {
         //     res.status(401).send({message: 'missing subdomain'});
         // }
@@ -139,11 +139,11 @@ app.use("/api/bamboohr*", (req, res, next) => {
 
     console.log('***** /api/bamboohr* *****')
 
-    // return UNAUTHORIZED [401] if the request is missing the x-subdomain or x-api-key headers
-    if (!req.headers['x-subdomain'] ) {
+    // return UNAUTHORIZED [401] if the request is missing the x-bamboohr-subdomain or x-bamboohr-api-key headers
+    if (!req.headers['x-bamboohr-subdomain'] ) {
         res.status(401).send({message: 'missing subdomain'});
     }
-    else if (!req.headers['x-api-key'] ) {
+    else if (!req.headers['x-bamboohr-api-key'] ) {
         res.status(401).send({message: 'missing API key'});
     }
 
@@ -166,11 +166,11 @@ app.use("/api/bamboohr",
         },
         router: function(req) {
             console.log('***** router *****')
-            console.log('x-subdomain',req.headers['x-subdomain'])
+            console.log('x-bamboohr-subdomain',req.headers['x-bamboohr-subdomain'])
 
             // modify the target to include the subdomain
-            const target = `https://api.bamboohr.com/api/gateway.php/${process.env.BAMBOOHR_API_SUBDOMAIN}/v1`;
-            // const target = `https://api.bamboohr.com/api/gateway.php/${req.headers['x-subdomain']}/v1`;
+            // const target = `https://api.bamboohr.com/api/gateway.php/${process.env.BAMBOOHR_API_SUBDOMAIN}/v1`;
+            const target = `https://api.bamboohr.com/api/gateway.php/${req.headers['x-bamboohr-subdomain']}/v1`;
             console.log('target:',target);
             return target;
         },
@@ -181,17 +181,17 @@ app.use("/api/bamboohr",
             // log the request
             // Object.keys(req.headers).forEach( k => console.log(`${k}:`, req.headers[k]) );
 
-            // return UNAUTHORIZED [401] if the request is missing the x-subdomain or x-api-key headers
-            // if (!req.headers['x-subdomain'] ) {
-            //     res.status(401).send({message: 'missing subdomain'});
-            // }
-            // else if (!req.headers['x-api-key'] ) {
-            //     res.status(401).send({message: 'missing API key'});
-            // }
+            // return UNAUTHORIZED [401] if the request is missing the x-bamboohr-subdomain or x-bamboohr-api-key headers
+            if (!req.headers['x-bamboohr-subdomain'] ) {
+                res.status(401).send({message: 'missing subdomain'});
+            }
+            else if (!req.headers['x-bamboohr-api-key'] ) {
+                res.status(401).send({message: 'missing API key'});
+            }
         
             // add an authorization header
-            const authorization = "Basic " + Buffer.from(process.env.BAMBOOHR_API_KEY + ":password").toString('base64')
-            // const authorization = "Basic " + Buffer.from(req.headers['x-api-key'] + ":password").toString('base64')
+            // const authorization = "Basic " + Buffer.from(process.env.BAMBOOHR_API_KEY + ":password").toString('base64')
+            const authorization = "Basic " + Buffer.from(req.headers['x-bamboohr-api-key'] + ":password").toString('base64')
             console.log('authorization:',authorization)
             proxyReq.setHeader('Authorization', authorization);
 
