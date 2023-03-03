@@ -96,6 +96,10 @@ app.get('/widgets/full_name', (req, res) => {
     res.sendFile(`${__dirname}/widgets/com.lorenzbus.full_name.html`)
 });
 
+app.get('/widgets/show_image', (req, res) => {
+    res.sendFile(`${__dirname}/widgets/com.lorenzbus.show_image.html`)
+});
+
 /*
 Querystrings:
     q - the text to use to filter the displayName
