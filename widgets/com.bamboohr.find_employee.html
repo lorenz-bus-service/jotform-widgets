@@ -36,6 +36,23 @@
             let companyDomain = null;
             let apiKey = null;
             let employees = [];
+            let selectedItem = null;
+
+            /*
+            $.ajax({
+                url: "http://localhost:3000/api/bamboohr/employees/directory",
+                type: 'GET',
+                headers: { 
+                    Accept: 'application/json',
+                    'x-bamboohr-subdomain': companyDomain,
+                    'x-bamboohr-api-key': apiKey,
+                },
+                dataType: 'json',
+                success: function(res) {
+                    employees = res
+                }
+            });
+            */
 
             const selectEmployeeName = document.getElementById('selectEmployeeName');
 
@@ -57,7 +74,7 @@
 
             //always subscribe to ready event and implement widget related code inside callback function 
             JFCustomWidget.subscribe("ready", function(){
-                console.log('JFCustomWidget.ready')
+                console.log('com.lorenzbus.find_employee.JFCustomWidget.ready')
 
                 const subdomain = JFCustomWidget.getWidgetSetting('x-bamboohr-subdomain');
                 console.log('x-bamboohr-subdomain',subdomain)
@@ -73,7 +90,7 @@
                         'x-bamboohr-subdomain': subdomain,
                         'x-bamboohr-api-key': apiKey,
                     }
-                    console.log('headers',headers)
+                    // console.log('headers',headers)
 
                     $.ajax({
                         url: "https://jotform-widgets.azurewebsites.net/api/bamboohr/employees/directory",
@@ -85,7 +102,6 @@
                         },
                         dataType: 'json',
                         success: function(res) {
-                            // console.log('res',res)
                             employees = res
                         }
                     });
@@ -94,25 +110,19 @@
 
                 //subscribe to form submit event
                 JFCustomWidget.subscribe("submit", function(){
-                    console.log('JFCustomWidget.submit')
+                    console.log('com.lorenzbus.find_employee.JFCustomWidget.submit')
 
                     // const employee = JSON.parse( $('#selectedEmployee')[0].innerHTML )
-                    // console.log('employee',employee)
-
-                    const selectedOption = selectEmployeeName.options[selectEmployeeName.selectedIndex]
+                    // const selectedOption = selectEmployeeName.options[selectEmployeeName.selectedIndex]
                     
                     var msg = {
                         valid: true,
-                        value: `${selectedOption.value}:${selectedOption.text}`
+                        value: `${selectedItem.id}:${selectedItem.displayName}`
+                        // value: $('#selectedEmployee')[0].innerHTML
+                        // value: `${selectedOption.value}:${selectedOption.text}`
                         // value: `${selectedOption.value}:${selectedOption.text}:${selectedOption.getAttribute('data-first-name')}:${selectedOption.getAttribute('data-last-name')}`
                     }
                     console.log('msg',msg)
-
-                    // var msg = {
-                    //     valid: true,
-                    //     value: $('#selectedEmployee')[0].innerHTML
-                    //     // value: document.getElementById('employeeInput').value
-                    // }
 
                     // send value to JotForm
                     JFCustomWidget.sendSubmit(msg);
@@ -125,7 +135,7 @@
                 preventEnter: true,
                 resolver: 'custom',
                 formatResult: function (item) {
-                    console.log('autoComplete.formatResult');
+                    console.log('com.lorenzbus.find_employee.autoComplete.formatResult');
                     
                     return {
                         value: item.id,
@@ -148,20 +158,21 @@
 
             /* when a select-list option has been chosen, save the JSON to the "selectedEmployee" element */
             $('.basicAutoSelect').on('autocomplete.select', function (evt, item) {
-                console.log('***** autocomplete.select *****');
+                console.log('com.lorenzbus.find_employee.autocomplete.select');
+
+                // store for access in submit event
+                selectedItem = item
 
                 // $('#selectedEmployee').html(item?JSON.stringify(item):'null');
 
                 var msg = {
                     valid: true,
                     value: `${item.id}:${item.displayName}`
-                    // value: item?JSON.stringify(item):'null'
                 }
                 console.log('msg',msg)
 
                 // send value to JotForm
                 JFCustomWidget.sendData(msg);
-
             });
 
         });
