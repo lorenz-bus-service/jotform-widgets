@@ -46,7 +46,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkkAAACgBAMAAADqeuVkAAAAElBMVEUAAA
                             valid: true,
                             value: imgDisplay.src
                         }
-                        console.log('msg',msg)
+                        // console.log('msg',msg)
 
                         // return what was received
                         JFCustomWidget.sendSubmit(msg);
@@ -61,17 +61,17 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkkAAACgBAMAAADqeuVkAAAAElBMVEUAAA
                     console.log('com.lorenzbus.show_image.JFCustomWidget.populate');
                     console.log('data',data)
 
-                    if (data) { imgDisplay.src = data }
+                    if (data.value) { imgDisplay.src = data.value }
 
                     // structure to be returned
-                    // var data = {
-                    //     valid: true,
-                    //     value: 'dummy'
-                    // }
+                    var data = {
+                        valid: true,
+                        value: data.value
+                    }
                     // console.log('data',data)
 
                     // returned what was received
-                    // JFCustomWidget.sendData(data)
+                    JFCustomWidget.sendData(data)
                 });
 
             })
