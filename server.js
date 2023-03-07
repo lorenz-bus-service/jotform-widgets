@@ -39,14 +39,6 @@ app.get('/api', function (req, res) {
 https://bootstrap-autocomplete.readthedocs.io/en/latest/index.html
 https://raw.githack.com/xcash/bootstrap-autocomplete/master/dist/latest/index.html
 */
-/*
-                <select class="form-select" id="selectEmployeeName" placeholder="Type the employee's name..." autocomplete="off">
-                    <option>Choose an employee</option>
-                    <% employees.forEach(function(employee) { %>
-                        <option value="<%= employee.id %>" data-first-name="<%= employee.firstName %>" data-last-name="<%= employee.lastName %>"><%= employee.displayName %></option>
-                    <% }); %>
-                </select>
-
 app.get('/widgets/find_employee', (req, res) => {
 
     // make async call to BambooHr's API
@@ -81,12 +73,13 @@ app.get('/widgets/find_employee', (req, res) => {
     })()
 
 });
-*/
 
+/*
 app.get('/widgets/find_employee', (req, res) => {
     res.sendFile(`${__dirname}/widgets/com.bamboohr.find_employee.html`)
     // res.render(`${__dirname}/widgets/com.bamboohr.find_employee.ejs`)
 });
+*/
 
 app.get('/widgets/find_places', (req, res) => {
     res.sendFile(`${__dirname}/widgets/com.google.find_places.html`)
@@ -96,6 +89,11 @@ app.get('/widgets/full_name', (req, res) => {
     res.sendFile(`${__dirname}/widgets/com.lorenzbus.full_name.html`)
 });
 
+/*
+Links:
+- https://www.base64encoder.io/image-to-base64-converter/
+
+*/
 app.get('/widgets/show_image', (req, res) => {
     res.sendFile(`${__dirname}/widgets/com.lorenzbus.show_image.html`)
 });
