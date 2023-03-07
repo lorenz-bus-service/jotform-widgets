@@ -13,9 +13,18 @@
             <label for="selectEmployeeName" class="form-label">Employee Name</label>
             <div class="mb-3">
                 
-                <div class="mb-3">
+                <!-- <div class="mb-3">
                     <select class="form-control basicAutoComplete" id="selectEmployeeName" data-url="/api/bamboohr/employees/directory" placeholder="Type the employee's name..." autocomplete="off"></select>
                     <small id="employeeHelp" class="form-text text-muted">Searching will begin when the third letter is typed.</small>
+                </div> -->
+
+                <div class="mb-3">
+                    <select class="form-select" id="selectEmployeeName" placeholder="Type the employee's name..." autocomplete="off">
+                        <option>Choose an employee</option>
+                        <% employees.forEach(function(employee) { %>
+                            <option value="<%= employee.id %>"><%= employee.displayName %></option>
+                        <% }); %>
+                    </select>
                 </div>
 
             </div>
@@ -41,7 +50,6 @@
                     var msg = {
                         valid: true,
                         value: `${selectedOption.value}:${selectedOption.text}`
-                        // value: `${selectedOption.value}:${selectedOption.text}:${selectedOption.getAttribute('data-first-name')}:${selectedOption.getAttribute('data-last-name')}`
                     }
                     console.log('msg',msg)
 
@@ -70,7 +78,6 @@
                         var msg = {
                             valid: true,
                             value: `${selectedOption.value}:${selectedOption.text}`
-                            // value: `${selectedOption.value}:${selectedOption.text}:${selectedOption.getAttribute('data-first-name')}:${selectedOption.getAttribute('data-last-name')}`
                         }
                         console.log('msg',msg)
 
@@ -94,43 +101,17 @@
                             html: [ $('<img>').attr('src', item.photoUrl).css("height", 18), ' ', item.displayName ]
                         };
                     },
-                    // events: {
-                    //     typed: function(newValue, origJQElement) {
-                    //         console.log('***** typed *****');
-                    //         console.log('newValue',newValue);
-                    //         console.log('origJQElement',origJQElement);
-                    //     },
-                    //     searchPre: function(newValue, origJQElement) {
-                    //         console.log('***** searchPre *****');
-                    //         console.log('newValue',newValue);
-                    //         console.log('origJQElement',origJQElement);
-                    //     },
-                    //     search: function (qry, callback) {
-                    //         console.log('***** search *****');
-                    //         console.log('qry',qry);
 
-                    //         // filter the pre-cached list of employees
-                    //         // const filtered = employees.filter( e => e.displayName.toLowerCase().includes(qry.toLowerCase()) );
-                    //         // callback(filtered)
-                    //     },
-                    //     searchPost: function(resultsFromServer, origJQElement) {
-                    //         console.log('***** searchPost *****');
-                    //         console.log('resultsFromServer',resultsFromServer);
-                    //         console.log('origJQElement',origJQElement);
-                    //     }
-                    // }
                 });
 
                 /* when a select-list option has been chosen, save the JSON to the "selectedEmployee" element */
                 $('.basicAutoComplete').on('autocomplete.select', function (evt, item) {
                     console.log('***** autocomplete.select *****');
                     // console.log('item',item)
-                    // $('#selectedEmployee').html(item?JSON.stringify(item):'null');
 
                     var msg = {
                         valid: true,
                         value: `${item.id}:${item.displayName}`
-                        // value: item?JSON.stringify(item):'null'
                     }
                     console.log('msg',msg)
 
