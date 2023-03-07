@@ -22,7 +22,7 @@
                     <select class="form-select" id="selectEmployeeName" placeholder="Type the employee's name..." autocomplete="off">
                         <option>Choose an employee</option>
                         <% employees.forEach(function(employee) { %>
-                            <option value="<%= employee.id %>"><%= employee.displayName %></option>
+                            <option value="<%= employee.id %>"><%= employee.lastName %>, <%= employee.firstName %></option>
                         <% }); %>
                     </select>
                 </div>
