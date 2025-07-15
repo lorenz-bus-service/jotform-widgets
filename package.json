@@ -1,15 +1,22 @@
 {
   "name": "jotform-widgets",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "description": "Node.js app to serve Jotform widgets.",
   "main": "server.js",
-  "scripts": {},
+  "scripts": {
+    "start": "node server.js",
+    "dev": "NODE_ENV=development nodemon server.js"
+  },
   "author": "Craig Buchanan",
   "license": "ISC",
   "dependencies": {
-    "ejs": "^3.1.8",
-    "express": "^4.18.2",
-    "http-proxy-middleware": "^2.0.6",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-ejs-layouts": "^2.5.1",
+    "http-proxy-middleware": "^3.0.5",
     "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
 }
