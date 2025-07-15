@@ -1,0 +1,39 @@
+<div class="mb-3 row align-items-center">
+  <label for="selectEmployeeName" class="col-sm-2 col-form-label text-end">Choose an employee</label>
+  <div class="col-sm-10">
+    <select class="form-select" id="selectEmployeeName" autocomplete="off" aria-label="Select an employee">
+      <option></option>
+      <% employees.forEach(function(employee) { %>
+          <option value="<%= employee.id %>"><%= employee.lastName %>, <%= employee.firstName %></option>
+      <% }); %>
+    </select>
+  </div>
+</div>
+
+<script>
+  $(function () {
+
+    const selectEmployeeName = document.getElementById('selectEmployeeName');
+
+    selectEmployeeName.addEventListener("change", function(){
+      console.log('selectEmployeeName.change');
+
+      const selectedOption = selectEmployeeName.options[selectEmployeeName.selectedIndex]
+      
+      var msg = {
+          valid: true,
+          value: `${selectedOption.value}:${selectedOption.text}`
+          // value: JSON.stringify({
+          //   value: selectedOption.value,
+          //   text: selectedOption.text
+          // })
+      }
+      console.log('msg',msg)
+
+      // send value to JotForm
+      JFCustomWidget.sendData(msg)
+
+    },true); 
+
+  });
+</script>

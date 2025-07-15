@@ -1,0 +1,39 @@
+<div class="mb-3 row align-items-center">
+  <label for="selectDriverName" class="col-sm-2 col-form-label text-end">Choose a driver</label>
+  <div class="col-sm-10">
+    <select class="form-select" id="selectDriverName" autocomplete="off" aria-label="Select a driver">
+      <option></option>
+      <% records.forEach(function(driver) { %>
+          <option value="<%= driver.id %>"><%= driver.fields['Employee Name'] %></option>
+      <% }); %>
+    </select>
+  </div>
+</div>
+
+<script>
+  $(function () {
+
+    const selectDriverName = document.getElementById('selectDriverName');
+
+    selectDriverName.addEventListener("change", function(){
+      console.log('selectDriverName.change');
+
+      const selectedOption = selectDriverName.options[selectDriverName.selectedIndex]
+      
+      var msg = {
+          valid: true,
+          value: `${selectedOption.value}:${selectedOption.text}`
+          // value: JSON.stringify({
+          //   value: selectedOption.value,
+          //   text: selectedOption.text
+          // })
+      }
+      console.log('msg',msg)
+
+      // send value to JotForm
+      JFCustomWidget.sendData(msg)
+
+    },true); 
+
+  });
+</script>
