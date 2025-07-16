@@ -1,5 +1,5 @@
 IMAGE_NAME=jotform-widgets
-IMAGE_TAG=0.0.7
+IMAGE_TAG=0.0.8
 
 AZURE_RESOURCE_GROUP=WebAppResourceGroup
 AZURE_WEBAPP_NAME=jotform-widgets
