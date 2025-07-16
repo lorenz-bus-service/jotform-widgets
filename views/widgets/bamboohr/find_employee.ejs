@@ -1,5 +1,5 @@
 <div class="mb-3 row align-items-center">
-  <label for="selectEmployeeName" class="col-sm-2 col-form-label text-end">Choose an employee</label>
+  <!-- <label for="selectEmployeeName" class="col-sm-2 col-form-label text-end">Choose an employee</label> -->
   <div class="col-sm-10">
     <select class="form-select" id="selectEmployeeName" autocomplete="off" aria-label="Select an employee">
       <option></option>
@@ -22,18 +22,11 @@
         const selectedOption = selectEmployeeName.options[selectEmployeeName.selectedIndex]
         console.log('value', selectedOption.value);
         console.log('text', selectedOption.text);
-        
-        const value = `${selectedOption.value}:${selectedOption.text}`
-        // const value = selectedOption.text
-        // const value = JSON.stringify({
-        //       value: selectedOption.value,
-        //       text: selectedOption.text
-        //     })
 
         // send value to JotForm
         JFCustomWidget.sendData({
           valid: true,
-          value: value  
+          value: selectedOption.value
         });
 
     },true); 
