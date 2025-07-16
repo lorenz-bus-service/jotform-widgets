@@ -1,14 +1,10 @@
-<div class="mb-3 row align-items-center">
-  <!-- <label for="selectEmployeeName" class="col-sm-2 col-form-label text-end">Choose an employee</label> -->
-  <div class="col-sm-10">
-    <select class="form-select" id="selectEmployeeName" autocomplete="off" aria-label="Select an employee">
-      <option></option>
-      <% employees.forEach(function(employee) { %>
-          <option value="<%= employee.id %>"><%= employee.lastName %>, <%= employee.firstName %></option>
-      <% }); %>
-    </select>
-  </div>
-</div>
+<select class="form-select" id="selectEmployeeName" autocomplete="off" aria-label="Select an employee">
+  <option></option>
+  <% employees.forEach(function(employee) { %>
+      <option value="<%= employee.id %>"><%= employee.lastName %>, <%= employee.firstName %></option>
+  <% }); %>
+</select>
+<div class="form-text">version: <%= version %></div>
 
 <script>
   // Using Vanilla JS to handle the change event
