@@ -10,19 +10,33 @@ export const getDriverList = async () => {
   const url = `${ AIRTABLE_BASE_URL }/${ BASE_ID }/${ TABLE_EMPLOYEE }?view=${ VIEW_ACTIVE_EMPLOYEES }&fields%5B%5D=Employee+%23&fields%5B%5D=Employee+Name`
   console.log('url',url)
   
-  return await fetch(url,{
-      method: 'GET', 
+  let allRecords = [];
+  let offset = undefined;
+
+  do {
+
+    const pageUrl = offset ? `${url}&offset=${encodeURIComponent(offset)}` : url;
+    const response = await fetch(pageUrl, {
+      method: 'GET',
       headers: {
-          Accept: 'application/json',
-          Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`
+        Accept: 'application/json',
+        Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`
       }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Airtable API error: ${response.status}`);
     }
-  )
-  .then(response => {
-    if (response.ok) {
-      return response.json()
+
+    const data = await response.json();
+
+    if (Array.isArray(data.records)) {
+      allRecords = allRecords.concat(data.records);
     }
-  })
-  .then((data) => data)
+    offset = data.offset;
+
+  } while (offset);
+
+  return allRecords;
 
 };
