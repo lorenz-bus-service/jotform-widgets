@@ -1,6 +1,6 @@
 {
   "name": "jotform-widgets",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Node.js app to serve Jotform widgets.",
   "main": "server.js",
   "scripts": {
