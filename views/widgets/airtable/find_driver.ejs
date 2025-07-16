@@ -1,14 +1,20 @@
-<div class="mb-3 row align-items-center">
+<!-- <div class="mb-3 row align-items-center"> -->
   <!-- <label for="selectDriverName" class="col-sm-2 col-form-label text-end">Choose a driver</label> -->
-  <div class="col-sm-10">
+  <!-- <div class="col-sm-10"> -->
     <select class="form-select" id="selectDriverName" autocomplete="off" aria-label="Select a driver">
       <option></option>
       <% records.forEach(function(driver) { %>
-          <option value="<%= driver.id %>"><%= driver.fields['Employee Name'] %></option>
+          <option 
+        value="<%= driver.id %>" 
+        data-first-name="<%= driver.fields['First Name'] %>" 
+        data-last-name="<%= driver.fields['Last Name'] %>"
+          >
+        <%= driver.fields['Employee Name'] %>
+          </option>
       <% }); %>
     </select>
-  </div>
-</div>
+  <!-- </div>
+</div> -->
 
 <script>
   // Using Vanilla JS to handle the change event
@@ -22,13 +28,24 @@
         const selectedOption = selectDriverName.options[selectDriverName.selectedIndex]
         console.log('value', selectedOption.value);
         console.log('text', selectedOption.text);
+        console.log('data-first-name', selectedOption.dataset.firstName);
+        console.log('data-last-name', selectedOption.dataset.lastName);
         
-        const value = `${selectedOption.value}:${selectedOption.text}`
+        // const value = `${selectedOption.value}:${selectedOption.text}`
         // const value = selectedOption.text
-        // const value = JSON.stringify({
-        //       value: selectedOption.value,
-        //       text: selectedOption.text
-        //     })
+        const value = JSON.stringify({
+          recordId: selectedOption.value,
+          employeeName: selectedOption.text,
+          firstName: selectedOption.dataset.firstName,
+          lastName: selectedOption.dataset.lastName
+        })
+
+        JFCustomWidget.setFieldsValueByLabel({
+          'Trainee': {
+            first: selectedOption.dataset.firstName,
+            last: selectedOption.dataset.lastName
+          }
+        });
 
         // send value to JotForm
         JFCustomWidget.sendData({
@@ -42,6 +59,10 @@
     //inside callback function , it is the best practice while developing widgets
     JFCustomWidget.subscribe("ready", function(){
       console.log('JFCustomWidget.ready');
+
+      apiKey = JFCustomWidget.getWidgetSetting('x-airtable-api-key');
+      console.log('x-airtable-api-key',apiKey)
+
     });
 
   });
