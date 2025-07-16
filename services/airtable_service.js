@@ -7,7 +7,18 @@ export const getDriverList = async () => {
   const TABLE_EMPLOYEE = 'tbltlNVBPnZRjn6Ka'
   const VIEW_ACTIVE_EMPLOYEES = 'viwLpF7HcXq0L5dWP'
 
-  const url = `${ AIRTABLE_BASE_URL }/${ BASE_ID }/${ TABLE_EMPLOYEE }?view=${ VIEW_ACTIVE_EMPLOYEES }&fields%5B%5D=Employee+%23&fields%5B%5D=Employee+Name`
+  const fields = [
+    'Employee #',
+    'Employee Name',
+    'First Name',
+    'Last Name',
+  ]
+
+  const params = new URLSearchParams({ view: VIEW_ACTIVE_EMPLOYEES });
+  fields.forEach(field => params.append('fields[]', field));
+  const url = `${AIRTABLE_BASE_URL}/${BASE_ID}/${TABLE_EMPLOYEE}?${params.toString()}`;
+  
+  // const url = `${ AIRTABLE_BASE_URL }/${ BASE_ID }/${ TABLE_EMPLOYEE }?view=${ VIEW_ACTIVE_EMPLOYEES }&fields%5B%5D=Employee+%23&fields%5B%5D=Employee+Name`
   console.log('url',url)
   
   let allRecords = [];
