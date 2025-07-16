@@ -35,6 +35,13 @@
     //inside callback function , it is the best practice while developing widgets
     JFCustomWidget.subscribe("ready", function(){
       console.log('JFCustomWidget.ready');
+
+      const subdomain = JFCustomWidget.getWidgetSetting('x-bamboohr-subdomain');
+      console.log('x-bamboohr-subdomain',subdomain)
+
+      const apiKey = JFCustomWidget.getWidgetSetting('x-bamboohr-api-key');
+      console.log('x-bamboohr-api-key',apiKey)
+      
     });
 
   });
