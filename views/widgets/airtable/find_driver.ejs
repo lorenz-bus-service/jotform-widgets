@@ -22,50 +22,43 @@
         console.log('selectDriverName.change');
 
         const selectedOption = selectDriverName.options[selectDriverName.selectedIndex]
+
         console.log('value', selectedOption.value);
         console.log('text', selectedOption.text);
         console.log('data-first-name', selectedOption.dataset.firstName);
         console.log('data-last-name', selectedOption.dataset.lastName);
+
+        // JFCustomWidget.setFieldsValueByLabel([
+        //   {
+        //     label: "First Name",
+        //     value: selectedOption.dataset.firstName
+        //   },
+        //   {
+        //     label: "Last Name",
+        //     value: selectedOption.dataset.lastName
+        //   },
+        // ]);
+
+        // set indicated fields in the Full Name widget
+        const firstNameFieldId = JFCustomWidget.getWidgetSetting('first-name-field-id') || 'first_13';
+        const lastNameFieldId = JFCustomWidget.getWidgetSetting('last-name-field-id') || 'last_13';
+
+        JFCustomWidget.storeToField(firstNameFieldId, selectedOption.dataset.firstName);
+        JFCustomWidget.storeToField(lastNameFieldId, selectedOption.dataset.lastName);
         
-        // const value = `${selectedOption.value}:${selectedOption.text}`
-        // const value = selectedOption.text
-        const value = JSON.stringify({
-          recordId: selectedOption.value,
-          employeeName: selectedOption.text,
-          firstName: selectedOption.dataset.firstName,
-          lastName: selectedOption.dataset.lastName
-        })
-
-        const fields = [
-          {
-            label: "First Name",
-            value: selectedOption.dataset.firstName
-          },
-          {
-            label: "Last Name",
-            value: selectedOption.dataset.lastName
-          },
-          // {
-          //   label: "Trainee",
-          //   // value: `${ selectedOption.dataset.firstName } ${ selectedOption.dataset.lastName}`
-          //   value: {
-          //     prefix: '',
-          //     first: selectedOption.dataset.firstName,
-          //     middle: '',
-          //     last: selectedOption.dataset.lastName,
-          //     suffix: ''
-          //   }
-          // }
-        ]
-        console.log('fields', fields);
-
-        JFCustomWidget.setFieldsValueByLabel(fields);
+        // const value = {
+        //   recordId: selectedOption.value,
+        //   employeeName: selectedOption.text,
+        //   firstName: selectedOption.dataset.firstName,
+        //   lastName: selectedOption.dataset.lastName
+        // }
+        // console.log('value', value);
 
         // send value to JotForm
-        JFCustomWidget.sendData({
-          valid: true,
-          value: value
-        })
+        // JFCustomWidget.sendData({
+        //   valid: true,
+        //   value: JSON.stringify(value)
+        // })
 
       });
 
@@ -74,8 +67,16 @@
     JFCustomWidget.subscribe("ready", function(){
       console.log('JFCustomWidget.ready');
 
-      apiKey = JFCustomWidget.getWidgetSetting('x-airtable-api-key');
-      console.log('x-airtable-api-key',apiKey)
+      const airtableApiKey = JFCustomWidget.getWidgetSetting('x-airtable-api-key');
+      console.log('x-airtable-api-key',airtableApiKey);
+
+      const firstNameFieldId = JFCustomWidget.getWidgetSetting('first-name-field-id');
+      console.log('first-name-field-id',firstNameFieldId);
+
+      const lastNameFieldId = JFCustomWidget.getWidgetSetting('last-name-field-id');
+      console.log('last-name-field-id',lastNameFieldId);
+
+      // todo: add error text to the widget
 
     });
 
