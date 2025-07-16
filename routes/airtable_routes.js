@@ -7,7 +7,7 @@ router
 
     const data = await airtableService.getDriverList()
 
-    res.render(`widgets/airtable/find_driver`, { title: 'Find Driver', records: data.records})
+    res.render(`widgets/airtable/find_driver`, { title: 'Find Driver', records: data})
 
   })
 
