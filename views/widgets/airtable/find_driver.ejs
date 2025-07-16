@@ -38,16 +38,24 @@
 
         const fields = [
           {
-            label: "Trainee",
-            // value: `${ selectedOption.dataset.firstName } ${ selectedOption.dataset.lastName}`
-            value: {
-              prefix: '',
-              first: selectedOption.dataset.firstName,
-              middle: '',
-              last: selectedOption.dataset.lastName,
-              suffix: ''
-            }
-          }
+            label: "First Name",
+            value: selectedOption.dataset.firstName
+          },
+          {
+            label: "Last Name",
+            value: selectedOption.dataset.lastName
+          },
+          // {
+          //   label: "Trainee",
+          //   // value: `${ selectedOption.dataset.firstName } ${ selectedOption.dataset.lastName}`
+          //   value: {
+          //     prefix: '',
+          //     first: selectedOption.dataset.firstName,
+          //     middle: '',
+          //     last: selectedOption.dataset.lastName,
+          //     suffix: ''
+          //   }
+          // }
         ]
         console.log('fields', fields);
 
