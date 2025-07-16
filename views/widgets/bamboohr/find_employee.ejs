@@ -11,29 +11,73 @@
 </div>
 
 <script>
-  $(function () {
+  // Using Vanilla JS to handle the change event
+  document.addEventListener('DOMContentLoaded',() => {
+    console.log('DOMContentLoaded');
 
-    const selectEmployeeName = document.getElementById('selectEmployeeName');
+    document.getElementById('selectEmployeeName')
+      .addEventListener("change", function(){
+        console.log('selectEmployeeName.change()');
 
-    selectEmployeeName.addEventListener("change", function(){
-      console.log('selectEmployeeName.change');
+        const selectedOption = selectEmployeeName.options[selectEmployeeName.selectedIndex]
+        console.log('value', selectedOption.value);
+        console.log('text', selectedOption.text);
+        
+        const value = `${selectedOption.value}:${selectedOption.text}`
+        // const value = selectedOption.text
+        // const value = JSON.stringify({
+        //       value: selectedOption.value,
+        //       text: selectedOption.text
+        //     })
 
-      const selectedOption = selectEmployeeName.options[selectEmployeeName.selectedIndex]
-      
-      var msg = {
+        // send value to JotForm
+        JFCustomWidget.sendData({
           valid: true,
-          value: `${selectedOption.value}:${selectedOption.text}`
-          // value: JSON.stringify({
-          //   value: selectedOption.value,
-          //   text: selectedOption.text
-          // })
-      }
-      console.log('msg',msg)
-
-      // send value to JotForm
-      JFCustomWidget.sendData(msg)
+          value: value  
+        });
 
     },true); 
 
+    //always subscribe to ready event and implement widget related code
+    //inside callback function , it is the best practice while developing widgets
+    JFCustomWidget.subscribe("ready", function(){
+      console.log('JFCustomWidget.ready');
+    });
+
   });
+
+  /*
+  $(function () {
+
+    // jQuery syntax
+    $('#selectEmployeeName').on('change', function(e) {
+      console.log('selectEmployeeName.change');
+
+      const selectedOption = selectEmployeeName.options[selectEmployeeName.selectedIndex]
+      console.log('value', selectedOption.value);
+      console.log('text', selectedOption.text);
+
+      // const value = `${selectedOption.value}:${selectedOption.text}`
+      // const value = selectedOption.text
+      // const value = JSON.stringify({
+      //       value: selectedOption.value,
+      //       text: selectedOption.text
+      //     })
+
+      // send value to JotForm
+      JFCustomWidget.sendData({
+        valid: true,
+        value: `${selectedOption.value}:${selectedOption.text}`
+      });
+
+    });
+
+    //always subscribe to ready event and implement widget related code
+    //inside callback function , it is the best practice while developing widgets
+    JFCustomWidget.subscribe("ready", function(){
+      console.log('JFCustomWidget.ready');
+    });
+
+  });
+  */
 </script>

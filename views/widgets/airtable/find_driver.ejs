@@ -11,6 +11,43 @@
 </div>
 
 <script>
+  // Using Vanilla JS to handle the change event
+  document.addEventListener('DOMContentLoaded',() => {
+    console.log('DOMContentLoaded');
+
+    document.getElementById('selectDriverName')
+      .addEventListener("change", function(){
+        console.log('selectDriverName.change');
+
+        const selectedOption = selectDriverName.options[selectDriverName.selectedIndex]
+        console.log('value', selectedOption.value);
+        console.log('text', selectedOption.text);
+        
+        const value = `${selectedOption.value}:${selectedOption.text}`
+        // const value = selectedOption.text
+        // const value = JSON.stringify({
+        //       value: selectedOption.value,
+        //       text: selectedOption.text
+        //     })
+
+        // send value to JotForm
+        JFCustomWidget.sendData({
+          valid: true,
+          value: value
+        })
+
+      });
+
+    //always subscribe to ready event and implement widget related code
+    //inside callback function , it is the best practice while developing widgets
+    JFCustomWidget.subscribe("ready", function(){
+      console.log('JFCustomWidget.ready');
+    });
+
+  });
+
+  /*
+  jQuery syntax
   $(function () {
 
     const selectDriverName = document.getElementById('selectDriverName');
@@ -36,4 +73,5 @@
     },true); 
 
   });
+  */
 </script>
