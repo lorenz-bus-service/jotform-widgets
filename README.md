@@ -1,58 +1,9 @@
 # jotform-widgets
-HTML and JavaScript files to be used as Jotform widgets
+HTML and JavaScript files to be used as Jotform widgets.
 
-## Configuration
+## Register Widget
 
-### ensure that USER variable exists
-
-```bash
-printenv
-
-env -0 | sort -z | tr '\0' '\n'
-```
-
-### create HOST variable
-
-```bash
-export HOST=jotform.domain.com
-```
-
-### copy the deployment script to server
-
-```bash
-DIRECTORY=~
-scp ./deploy.sh ${USER}@${HOST}:${DIRECTORY}
-```
-
-###
-
-```bash
-# ssh to the server
-ssh ${USER}@${HOST}
-
-# make file executable
-chmod +x ./deploy.sh
-```
-
-## Usage
-
-### Run the publish task to copy the files to the server then run the deployment script
-
-```bash
-make pub
-```
-
-## Nginx
-
-`/etc/nginx/sites-available/jotform.lorenzbus.com`:
-
-```
-location / {
-    # First attempt to serve request as file, then                
-    # as directory, then fall back to displaying a 404.
-    proxy_pass http://127.0.0.1:3000/;
-}
-```
+List of Widgets: https://www.jotform.com/widgets/user/benjamincanine
 
 ## Reference
 
