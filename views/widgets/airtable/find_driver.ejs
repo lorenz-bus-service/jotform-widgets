@@ -11,6 +11,7 @@
   <% }); %>
 </select>
 <div class="form-text">version: <%= version %></div>
+<div id="widget-error" class="form-text text-danger" style="display:none;"></div>
 
 <script>
   // Using Vanilla JS to handle the change event
@@ -77,6 +78,14 @@
       console.log('last-name-field-id',lastNameFieldId);
 
       // todo: add error text to the widget
+      if (!firstNameFieldId || !lastNameFieldId) {
+        const errorDiv = document.getElementById('widget-error');
+        errorDiv.style.display = 'block';
+        let missingFields = [];
+        if (!firstNameFieldId) missingFields.push('First Name Field ID');
+        if (!lastNameFieldId) missingFields.push('Last Name Field ID');
+        errorDiv.textContent = 'Missing: ' + missingFields.join(', ');
+      }
 
     });
 
