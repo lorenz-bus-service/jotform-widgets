@@ -32,8 +32,9 @@ const airtable_routes = require('./routes/airtable_routes')
 const bamboohr_routes = require('./routes/bamboohr_routes')
 const google_routes = require('./routes/google_routes')
 
-const airtable_api_routes = require('./routes/api/airtable_routes')
-const bamboohr_api_routes = require('./routes/api/bamboohr_routes')
+// const airtableProxy = require('./routes/airtableProxy');
+// const airtable_api_routes = require('./routes/api/airtable_routes')
+// const bamboohr_api_routes = require('./routes/api/bamboohr_routes')
 
 app
   .get('/', (req,res) => {
@@ -43,16 +44,19 @@ app
     });
   })
 
-app.get('/widgets/find_places', (req, res) => {
-    res.sendFile(`${__dirname}/widgets/com.google.find_places.html`)
-});
+// app.get('/widgets/find_places', (req, res) => {
+//     res.sendFile(`${__dirname}/widgets/com.google.find_places.html`)
+// });
 
 app.use('/widgets/airtable', airtable_routes)
 app.use('/widgets/bamboohr', bamboohr_routes)
 app.use('/widgets/google', google_routes)
 
-app.use('/api/airtable', airtable_api_routes)
-app.use('/api/bamboohr', bamboohr_api_routes)
+// Mount the airtable proxy under /api/airtable
+// app.use('/api/airtable', airtableProxy);
+
+// app.use('/api/airtable', airtable_api_routes)
+// app.use('/api/bamboohr', bamboohr_api_routes)
 
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
