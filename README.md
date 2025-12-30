@@ -7,6 +7,7 @@ List of Widgets: https://www.jotform.com/widgets/user/benjamincanine
 
 ## Reference
 
+- [Jotform API](https://api.jotform.com/docs/#overview0)
 - [Jotform Widget documentation](https://www.jotform.com/developers/widgets/)
 - [Bootstrap Autocomplete](https://bootstrap-autocomplete.readthedocs.io/en/latest/)
 - [Bootstrap Autocomplete (github)](https://github.com/xcash/bootstrap-autocomplete)
