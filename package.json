@@ -1,11 +1,12 @@
 {
   "name": "jotform-widgets",
-  "version": "0.0.11",
+  "version": "0.0.53",
   "description": "Node.js app to serve Jotform widgets.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "NODE_ENV=development nodemon server.js"
+    "dev": "NODE_ENV=development nodemon server.js",
+    "test": "jest"
   },
   "author": "Craig Buchanan",
   "license": "ISC",
@@ -17,6 +18,7 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "jest": "^30.0.4",
     "nodemon": "^3.1.10"
   }
 }
