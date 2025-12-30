@@ -1,0 +1,82 @@
+<select class="form-select" id="selectTrainee" autocomplete="off" aria-label="Choose a trainee">
+  <option></option>
+  <% records.forEach(function(employee) { %>
+    <option value="<%= employee.id %>">
+      <%= employee.fields['Full Name'] %>
+    </option>
+  <% }); %>
+</select>
+<div class="form-text">version: <%= version %></div>
+<!-- <div id="widget-error" class="form-text text-danger" style="display:none;"></div> -->
+
+<script>
+  // Using Vanilla JS to handle the change event
+  document.addEventListener('DOMContentLoaded',() => {
+    console.log('DOMContentLoaded');
+
+    document.getElementById('selectTrainee')
+      .addEventListener("change", function(){
+        console.log('selectTrainee.change');
+
+        const selectedOption = selectTrainee.options[selectTrainee.selectedIndex]
+
+        console.log('value', selectedOption.value);
+        console.log('text', selectedOption.text);
+
+        JFCustomWidget.setFieldsValueByLabel([
+          {
+            label: JFCustomWidget.getWidgetSetting('jotform-id-field') || "Trainee ID",
+            value: selectedOption.value
+          },
+        ]);
+
+        const data = {
+          valid: !!selectedOption.text,
+          value: selectedOption.text
+        };
+        console.log('data', data);
+
+        // return the recordId
+        JFCustomWidget.sendData(data);
+
+      });
+
+    //always subscribe to ready event and implement widget related code
+    //inside callback function , it is the best practice while developing widgets
+    JFCustomWidget.subscribe("ready", function(){
+      console.log('JFCustomWidget.ready');
+          
+      console.log('jotform-id-field',JFCustomWidget.getWidgetSetting('jotform-id-field'));
+      console.log('airtable-display-field',JFCustomWidget.getWidgetSetting('airtable-display-field'));
+
+      //subscribe to form submit event
+      JFCustomWidget.subscribe("submit", function(){
+        console.log('JFCustomWidget.submit');
+
+        const selectedOption = selectTrainee.options[selectTrainee.selectedIndex]
+        console.log('value', selectedOption.value);
+        console.log('text', selectedOption.text);
+
+        // pass the value to the associated small-text field
+        JFCustomWidget.setFieldsValueByLabel([
+          {
+            label: JFCustomWidget.getWidgetSetting('jotform-id-field') || "Trainer ID",
+            value: selectedOption.value
+          },
+        ]);
+
+        const data = {
+          valid: !!selectedOption.text,
+          value: selectedOption.text
+        };
+        console.log('data', data);
+
+        // return the text as the widget's value
+        JFCustomWidget.sendData(data);
+
+      });
+
+    });
+
+  });
+</script>
