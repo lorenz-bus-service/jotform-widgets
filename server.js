@@ -4,6 +4,8 @@ const path = require('path');
 const fs = require('fs');
 const morgan = require("morgan");
 
+const { initCache } = require('./services/airtable_service');
+
 const port = process.env.PORT || 3000;
 
 const app = express();
@@ -58,6 +60,11 @@ app.use('/widgets/google', google_routes)
 // app.use('/api/airtable', airtable_api_routes)
 // app.use('/api/bamboohr', bamboohr_api_routes)
 
-app.listen(port, () => {
-    console.log(`Server listening on port ${port}`);
-});
+const startServer = async () => {
+    await initCache(); // Server waits here for 20 seconds before listening
+    app.listen(port, () => {
+        console.log(`Server running on port ${port}`);
+    });
+};
+
+startServer();
