@@ -1,6 +1,6 @@
 {
   "name": "jotform-widgets",
-  "version": "0.0.53",
+  "version": "0.0.54",
   "description": "Node.js app to serve Jotform widgets.",
   "main": "server.js",
   "scripts": {
@@ -15,7 +15,9 @@
     "express": "^5.1.0",
     "express-ejs-layouts": "^2.5.1",
     "http-proxy-middleware": "^3.0.5",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "node-cache": "^5.1.2",
+    "node-cron": "^4.2.1"
   },
   "devDependencies": {
     "jest": "^30.0.4",
