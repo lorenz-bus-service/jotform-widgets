@@ -18,6 +18,7 @@
       .addEventListener("change", function(){
         console.log('selectTrainee.change');
 
+        const selectTrainee = document.getElementById('selectTrainee')
         const selectedOption = selectTrainee.options[selectTrainee.selectedIndex]
 
         console.log('value', selectedOption.value);
@@ -26,18 +27,21 @@
         JFCustomWidget.setFieldsValueByLabel([
           {
             label: JFCustomWidget.getWidgetSetting('jotform-id-field') || "Trainee ID",
+            // the recordID
             value: selectedOption.value
           },
         ]);
 
-        const data = {
-          valid: !!selectedOption.text,
-          value: selectedOption.text
-        };
+        const data = selectedOption.text
         console.log('data', data);
 
-        // return the recordId
-        JFCustomWidget.sendData(data);
+        if (data) {
+          console.log('sendData()');
+          // return the select's text
+          JFCustomWidget.sendData({
+            value: data
+          });
+        }
 
       });
 
@@ -45,7 +49,7 @@
     //inside callback function , it is the best practice while developing widgets
     JFCustomWidget.subscribe("ready", function(){
       console.log('JFCustomWidget.ready');
-          
+
       console.log('jotform-id-field',JFCustomWidget.getWidgetSetting('jotform-id-field'));
       console.log('airtable-display-field',JFCustomWidget.getWidgetSetting('airtable-display-field'));
 
@@ -53,7 +57,9 @@
       JFCustomWidget.subscribe("submit", function(){
         console.log('JFCustomWidget.submit');
 
+        const selectTrainee = document.getElementById('selectTrainee')
         const selectedOption = selectTrainee.options[selectTrainee.selectedIndex]
+
         console.log('value', selectedOption.value);
         console.log('text', selectedOption.text);
 
@@ -66,13 +72,15 @@
         ]);
 
         const data = {
-          valid: !!selectedOption.text,
+          valid: true,
+          // valid: !!selectedOption.text,
           value: selectedOption.text
         };
         console.log('data', data);
 
         // return the text as the widget's value
-        JFCustomWidget.sendData(data);
+        console.log('sendSubmit()');
+        JFCustomWidget.sendSubmit(data);
 
       });
 
