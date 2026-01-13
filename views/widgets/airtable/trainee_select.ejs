@@ -32,14 +32,14 @@
           },
         ]);
 
-        const data = selectedOption.text
-        console.log('data', data);
+        const text = selectedOption.text
+        console.log('text', text);
 
-        if (data) {
+        if (text) {
           console.log('sendData()');
-          // return the select's text
+          // return the text as the widget's value
           JFCustomWidget.sendData({
-            value: data
+            value: text
           });
         }
 

@@ -8,6 +8,7 @@
 </select>
 <div class="form-text">version: <%= version %></div>
 <!-- <div id="widget-error" class="form-text text-danger" style="display:none;"></div> -->
+
 <script>
 document.addEventListener('DOMContentLoaded',() => {
   console.log('DOMContentLoaded');
@@ -17,7 +18,9 @@ document.addEventListener('DOMContentLoaded',() => {
     .addEventListener("change", function(){
       console.log('selectTrainer.change');
 
+      const selectTrainer = document.getElementById('selectTrainer')
       const selectedOption = selectTrainer.options[selectTrainer.selectedIndex]
+
       console.log('value', selectedOption.value);
       console.log('text', selectedOption.text);
 
@@ -29,18 +32,21 @@ document.addEventListener('DOMContentLoaded',() => {
         },
       ]);
 
-      const data = {
-        valid: !!selectedOption.text,
-        value: selectedOption.text
-      };
-      console.log('data', data);
+        const text = selectedOption.text
+        console.log('text', text);
 
-      // return the text as the widget's value
-      JFCustomWidget.sendData(data);
+        if (text) {
+          console.log('sendData()');
+          // return the text as the widget's value
+          JFCustomWidget.sendData({
+            value: text
+          });
+        }
 
     });
 
-  //always subscribe to ready event and implement widget related code inside callback function
+  //always subscribe to ready event and implement widget related code
+  //inside callback function , it is the best practice while developing widgets
   JFCustomWidget.subscribe("ready", function(){
     console.log('JFCustomWidget.ready');
 
@@ -51,7 +57,9 @@ document.addEventListener('DOMContentLoaded',() => {
     JFCustomWidget.subscribe("submit", function(){
       console.log('JFCustomWidget.submit');
 
+      const selectTrainer = document.getElementById('selectTrainer')
       const selectedOption = selectTrainer.options[selectTrainer.selectedIndex]
+
       console.log('value', selectedOption.value);
       console.log('text', selectedOption.text);
 
@@ -64,12 +72,14 @@ document.addEventListener('DOMContentLoaded',() => {
       ]);
 
       const data = {
-        valid: !!selectedOption.text,
+        valid: true,
+        // valid: !!selectedOption.text,
         value: selectedOption.text
       };
       console.log('data', data);
 
       // return the text as the widget's value
+      console.log('sendSubmit()');
       JFCustomWidget.sendSubmit(data);
 
     });
