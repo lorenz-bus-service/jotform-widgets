@@ -60,6 +60,20 @@ app.use('/widgets/google', google_routes)
 // app.use('/api/airtable', airtable_api_routes)
 // app.use('/api/bamboohr', bamboohr_api_routes)
 
+// Add health check endpoint BEFORE the server starts listening
+app.get('/health', (req, res) => {
+  res.status(200).json({ 
+    status: 'healthy', 
+    timestamp: new Date(),
+    version: packageJson.version
+  });
+});
+
+// Simple readiness check (returns 200 once cache is loaded)
+app.get('/ready', (req, res) => {
+  res.status(200).json({ ready: true });
+});
+
 const startServer = async () => {
     await initCache(); // Server waits here for 20 seconds before listening
     app.listen(port, () => {
